@@ -1,0 +1,76 @@
+{% load static %}
+<footer class="footer-wrapper footer-layout2">
+    <div class="container z-index-common">
+        <div class="newsletter-wrap">
+            <div class="newsletter-content">
+                <div class="email-icon"><img src="{% static 'assets/img/icon/email_1.svg' %}" alt="Icon"></div>
+                <h4 class="newsletter-title">Get Fresh Updates from Wamugunda Farm</h4>
+            </div>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your Email" required>
+                <button type="submit" class="th-btn style3">Subscribe</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="widget-area">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-md-6 col-xl-4">
+                    <div class="widget footer-widget">
+                        <div class="th-widget-about">
+                            <div class="about-logo">
+                                <a href="{% url 'home' %}">
+                                    <img src="{% static 'assets/img/logo-footer.png' %}" 
+                                         alt="Wamugunda Farm"
+                                         width="155" height="69"
+                                         style="width:155px; height:69px; object-fit:contain;">
+                                </a>
+                            </div>
+                            <p class="about-text">100% organic farm in Nyeri, Kenya. Fresh daily harvest of fruits, vegetables, milk, bananas & macadamia.</p>
+                            <div class="th-social">
+                                <a href="https://www.facebook.com/wamugundafarm" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://wa.me/254726857007" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                                <a href="https://www.instagram.com/wamugundafarm" target="_blank"><i class="fab fa-instagram"></i></a>
+                                <a href="https://www.tiktok.com/@wamugundafarm" target="_blank"><i class="fab fa-tiktok"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-2">
+                    <div class="widget widget_nav_menu footer-widget">
+                        <h3 class="widget_title">Quick Links</h3>
+                        <ul class="menu">
+                            <li><a href="{% url 'about' %}">About Us</a></li>
+                            <li><a href="{% url 'shop:shop_list' %}">Shop</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-xl-3">
+                    <div class="widget footer-widget">
+                        <h3 class="widget_title">Contact Us</h3>
+                        <div class="th-widget-contact">
+                            <div class="info-box">
+                                <div class="info-box_icon"><i class="fas fa-phone"></i></div>
+                                <p class="info-box_text"><a href="tel:+254726857007">+254 726 857 007</a></p>
+                            </div>
+                            <div class="info-box">
+                                <div class="info-box_icon"><i class="fas fa-envelope"></i></div>
+                                <p class="info-box_text">info@wamugundafarm.co.ke</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright-wrap">
+        <div class="container">
+            <p class="copyright-text">Copyright © 2025 Wamugunda Farm. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>

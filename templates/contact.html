@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Wamugunda Farm - Contact Us{% endblock %}
+
+{% block content %}
+
+<!--==============================
+Breadcumb
+============================== -->
+<div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/bg/breadcumb-bg.jpg' %}">
+    <div class="container">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">Contact Us</h1>
+            <ul class="breadcumb-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li>Contact Us</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--==============================
+Contact Info Area
+==============================-->
+<div class="space">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-md-7">
+                <div class="title-area text-center">
+                    <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="shape">Get in Touch</span>
+                    <h2 class="sec-title">Contact Information</h2>
+                    <p class="sec-text">We’d love to hear from you! Reach out for inquiries, farm visits, orders, or partnerships.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row gy-4 justify-content-center">
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="contact-feature">
+                    <div class="box-icon">
+                        <i class="fa-light fa-location-dot"></i>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="box-title">Our Address</h3>
+                        <p class="box-text">Wamugunda Farm<br>Murang'a County, Near Pioneers School<br>Central Kenya</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="contact-feature">
+                    <div class="box-icon bg-theme2">
+                        <i class="fa-light fa-phone"></i>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="box-title">Phone Number</h3>
+                        <p class="box-text">
+                            <a href="tel:+254700123456">+254 700 123 456</a><br>
+                            <a href="tel:+254733987654">+254 733 987 654</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="contact-feature">
+                    <div class="box-icon bg-title">
+                        <i class="fa-light fa-envelope"></i>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="box-title">Email Address</h3>
+                        <p class="box-text">
+                            <a href="mailto:info@wamugundafarm.co.ke">info@wamugundafarm.co.ke</a><br>
+                            <a href="mailto:sales@wamugundafarm.co.ke">sales@wamugundafarm.co.ke</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="contact-feature">
+                    <div class="box-icon bg-success">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="box-title">WhatsApp Us</h3>
+                        <p class="box-text">
+                            <a href="https://wa.me/254700123456" target="_blank">+254 700 123 456</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--==============================
+Contact Form Area
+==============================-->
+<div class="space-bottom">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <form action="{% url 'contact' %}" method="POST" class="contact-form input-smoke ajax-contact">
+                    {% csrf_token %}
+                    <h2 class="sec-title text-center mb-40">Send Us a Message</h2>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Your Name *" required>
+                            <i class="fal fa-user"></i>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address *" required>
+                            <i class="fal fa-envelope"></i>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="tel" class="form-control" name="phone" id="phone" placeholder="Phone Number">
+                            <i class="fal fa-phone"></i>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">
+                            <i class="fal fa-chevron-down"></i>
+                        </div>
+                        <div class="form-group col-12">
+                            <textarea name="message" id="message" cols="30" rows="5" class="form-control" placeholder="Write Your Message... *" required></textarea>
+                            <i class="fal fa-pencil"></i>
+                        </div>
+                        <div class="form-btn text-center col-12 mt-30">
+                            <button class="th-btn btn-fw">Send Message <i class="fas fa-chevrons-right ms-2"></i></button>
+                        </div>
+                    </div>
+                    <p class="form-messages mb-0 mt-3"></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--==============================
+Google Map Area
+==============================-->
+<div class="contact-map space-bottom">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.789!2d37.141!3d-0.718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1787e9c0f1a5b5e7%3A0x8f8e8d8e8d8e8d8e!2sMurang&#39;a%2C%20Kenya!5e0!3m2!1sen!2ske!4v1700000000000" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+{% endblock %}

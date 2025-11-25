@@ -1,0 +1,147 @@
+{% load static %}
+<header class="th-header header-layout2">
+    <div class="sticky-wrapper">
+        <div class="container">
+            <div class="z-index-common">
+                <!-- Top Bar -->
+                <div class="header-top">
+                    <div class="row justify-content-center justify-content-lg-between align-items-center gy-2">
+                        <div class="col-auto d-none d-lg-block">
+                            <p class="header-notice text-white">
+                                Free delivery on orders over KSh 5,000 in Nairobi!
+                            </p>
+                        </div>
+                        <div class="col-auto">
+                            <div class="header-links">
+                                <ul>
+                                    <li><i class="fal fa-location-dot"></i> Nyeri, Kenya</li>
+                                    <li>
+                                        <div class="social-links">
+                                            <a href="https://www.facebook.com/wamugundafarm" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                            <a href="https://wa.me/254726857007" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                                            <a href="https://www.instagram.com/wamugundafarm" target="_blank"><i class="fab fa-instagram"></i></a>
+                                            <a href="https://www.tiktok.com/@wamugundafarm" target="_blank"><i class="fab fa-tiktok"></i></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Menu Area -->
+                <div class="menu-area">
+                    <div class="logo-bg"></div>
+                    <div class="row align-items-center justify-content-between">
+                        <!-- Desktop Logo - PNG 155×69 -->
+                        <div class="col-auto">
+                            <div class="header-logo">
+                                <a href="{% url 'home' %}">
+                                    <img src="{% static 'assets/img/logo-white.png' %}" 
+                                         alt="Wamugunda Farm"
+                                         width="155" height="69"
+                                         style="width:155px; height:69px; object-fit:contain;">
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Desktop Menu -->
+                        <div class="col-auto">
+                            <nav class="main-menu d-none d-lg-inline-block">
+                                <ul>
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li><a href="{% url 'about' %}">About Us</a></li>
+                                    <li><a href="{% url 'shop:shop_list' %}">Shop</a></li>
+                                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                                </ul>
+                            </nav>
+                            <button type="button" class="th-menu-toggle d-block d-lg-none">
+                                <i class="far fa-bars"></i>
+                            </button>
+                        </div>
+
+                        <!-- Cart + WhatsApp Button (Real Number) -->
+                        <div class="col-auto d-none d-xl-block ms-auto">
+                            <div class="header-button">
+                                <a href="{% url 'cart:cart_detail' %}" class="simple-icon position-relative">
+                                    <i class="fa-regular fa-cart-shopping fa-xl"></i>
+                                    {% if cart %}
+                                        <span class="badge bg-success position-absolute top-0 start-100 translate-middle rounded-pill">
+                                            {{ cart|length }}
+                                        </span>
+                                    {% endif %}
+                                </a>
+                                <a href="https://wa.me/254726857007?text=Hello%20Wamugunda%20Farm!%20I'd%20like%20to%20place%20an%20order."
+                                   class="th-btn style4 ms-3" target="_blank">
+                                    <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="th-menu-wrapper">
+    <div class="th-menu-area text-center">
+        <button class="th-menu-toggle"><i class="fal fa-times"></i></button>
+        <div class="mobile-logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'assets/img/logo.png' %}" 
+                     alt="Wamugunda"
+                     width="155" height="69"
+                     style="width:155px; height:69px; object-fit:contain;">
+            </a>
+        </div>
+        <div class="th-mobile-menu">
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About Us</a></li>
+                <li><a href="{% url 'shop:shop_list' %}">Shop</a></li>
+                <li><a href="{% url 'cart:cart_detail' %}">Cart {% if cart %}({{ cart|length }}){% endif %}</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Mini Cart Sidebar -->
+<div class="sidemenu-wrapper sidemenu-cart">
+    <div class="sidemenu-content">
+        <button class="closeButton sideMenuCls"><i class="far fa-times"></i></button>
+        <div class="widget woocommerce widget_shopping_cart">
+            <h3 class="widget_title">Shopping Cart ({{ cart|length }})</h3>
+            <div class="widget_shopping_cart_content">
+                {% if cart %}
+                    <ul class="woocommerce-mini-cart cart_list">
+                        {% for item in cart %}
+                        <li class="woocommerce-mini-cart-item">
+                            <a href="{{ item.product.get_absolute_url }}" class="mini-cart-product">
+                                <img src="{% if item.product.images.first %}{{ item.product.images.first.image.url }}{% else %}{% static 'assets/img/product/no-image.png' %}{% endif %}"
+                                     alt="{{ item.product.name }}" width="60">
+                                <div>
+                                    <h4 class="mini-cart-title">{{ item.product.name }}</h4>
+                                    <span class="quantity">{{ item.quantity }} × KSh {{ item.price }}</span>
+                                </div>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <p class="woocommerce-mini-cart__total total">
+                        <strong>Subtotal:</strong>
+                        <span>KSh {{ cart.get_total_price }}</span>
+                    </p>
+                    <div class="woocommerce-mini-cart__buttons buttons">
+                        <a href="{% url 'cart:cart_detail' %}" class="th-btn w-100 mb-2">View Cart</a>
+                        <a href="#" class="th-btn style3 w-100">Checkout (Soon)</a>
+                    </div>
+                {% else %}
+                    <p class="text-center text-muted py-5">Your cart is empty</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

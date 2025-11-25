@@ -1,0 +1,952 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Wamugunda Farm - Fresh Organic Produce Daily{% endblock %}
+
+{% block content %}
+    <!--==============================
+Hero Area
+==============================-->
+    <div class="th-hero-wrapper hero-2" id="hero" data-bg-src="{% static 'assets/img/hero/hero_bg_2_1.jpg' %}">
+        <div class="swiper th-slider" id="heroSlider2" data-slider-options='{"effect":"fade"}'>
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="hero-inner">
+                        <div class="container">
+                            <div class="hero-style2">
+                                <span class="sub-title" data-ani="slideinup" data-ani-delay="0.2s"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="shape">100% Quality Foods</span>
+                                <h1 class="hero-title">
+                                    <span class="title1" data-ani="slideinup" data-ani-delay="0.4s">Our Organic</span>
+                                    <span class="title2" data-ani="slideinup" data-ani-delay="0.5s">Collection.</span>
+                                </h1>
+                                <div class="btn-group" data-ani="slideinup" data-ani-delay="0.7s">
+                                    <a href="{% url 'shop:shop_list' %}" class="th-btn">Shop Now<i class="fas fa-chevrons-right ms-2"></i></a>
+                                    <div class="arrow">
+                                        <img src="{% static 'assets/img/hero/hero_arrow.svg' %}" alt="Icon">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-img" data-ani="slidebottomright" data-ani-delay="0.1s">
+                            <img src="{% static 'assets/img/hero/hero_2_1.png' %}" alt="Image">
+                        </div>
+                        <div class="hero-shape1" data-ani="slideinup" data-ani-delay="0.7s">
+                            <img src="{% static 'assets/img/hero/hero_shape_1_1.png' %}" alt="shape">
+                        </div>
+                        <div class="hero-shape2" data-ani="slideinup" data-ani-delay="0.8s">
+                            <img src="{% static 'assets/img/hero/hero_shape_1_2.png' %}" alt="shape">
+                        </div>
+                        <div class="hero-shape3" data-ani="slideinup" data-ani-delay="0.9s">
+                            <img src="{% static 'assets/img/hero/hero_shape_1_3.png' %}" alt="shape">
+                        </div>
+                        <div class="hero-shape4" data-ani="slidebottomright" data-ani-delay="0.5s">
+                            <img src="{% static 'assets/img/hero/hero_shape_2_1.png' %}" alt="shape">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="hero-inner">
+                        <div class="container">
+                            <div class="hero-style2">
+                                <span class="sub-title" data-ani="slideinup" data-ani-delay="0.2s"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="shape">100% Quality Foods</span>
+                                <h1 class="hero-title">
+                                    <span class="title1" data-ani="slideinup" data-ani-delay="0.4s">Our Organic</span>
+                                    <span class="title2" data-ani="slideinup" data-ani-delay="0.5s">Vegetable</span>
+                                </h1>
+                                <div class="btn-group" data-ani="slideinup" data-ani-delay="0.7s">
+                                    <a href="{% url 'shop:shop_list' %}" class="th-btn">Shop Now<i class="fas fa-chevrons-right ms-2"></i></a>
+                                    <div class="arrow">
+                                        <img src="{% static 'assets/img/hero/hero_arrow.svg' %}" alt="Icon">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-img" data-ani="slidebottomright" data-ani-delay="0.1s">
+                            <img src="{% static 'assets/img/hero/hero_1_1.png' %}" alt="Image">
+                        </div>
+                        <div class="hero-shape1" data-ani="slideinup" data-ani-delay="0.7s">
+                            <img src="{% static 'assets/img/hero/hero_shape_1_1.png' %}" alt="shape">
+                        </div>
+                        <div class="hero-shape2" data-ani="slideinup" data-ani-delay="0.8s">
+                            <img src="{% static 'assets/img/hero/hero_shape_1_2.png' %}" alt="shape">
+                        </div>
+                        <div class="hero-shape3" data-ani="slideinup" data-ani-delay="0.9s">
+                            <img src="{% static 'assets/img/hero/hero_shape_1_3.png' %}" alt="shape">
+                        </div>
+                        <div class="hero-shape4" data-ani="slidebottomright" data-ani-delay="0.5s">
+                            <img src="{% static 'assets/img/hero/hero_shape_2_1.png' %}" alt="shape">
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="hero-inner">
+                        <div class="container">
+                            <div class="hero-style2">
+                                <span class="sub-title" data-ani="slideinup" data-ani-delay="0.2s"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="shape">100% Quality Foods</span>
+                                <h1 class="hero-title">
+                                    <span class="title1" data-ani="slideinup" data-ani-delay="0.4s">Our Organic</span>
+                                    <span class="title2" data-ani="slideinup" data-ani-delay="0.5s">Vegetable</span>
+                                </h1>
+                                <div class="btn-group" data-ani="slideinup" data-ani-delay="0.7s">
+                                    <a href="{% url 'shop:shop_list' %}" class="th-btn">Shop Now<i class="fas fa-chevrons-right ms-2"></i></a>
+                                    <div class="arrow">
+                                        <img src="{% static 'assets/img/hero/hero_arrow.svg' %}" alt="Icon">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-img" data-ani="slidebottomright" data-ani-delay="0.1s">
+                            <img src="{% static 'assets/img/hero/hero_2_3.png' %}" alt="Image">
+                        </div>
+                        <div class="hero-shape1" data-ani="slideinup" data-ani-delay="0.7s">
+                            <img src="{% static 'assets/img/hero/hero_shape_1_1.png' %}" alt="shape">
+                        </div>
+                        <div class="hero-shape2" data-ani="slideinup" data-ani-delay="0.8s">
+                            <img src="{% static 'assets/img/hero/hero_shape_1_2.png' %}" alt="shape">
+                        </div>
+                        <div class="hero-shape3" data-ani="slideinup" data-ani-delay="0.9s">
+                            <img src="{% static 'assets/img/hero/hero_shape_1_3.png' %}" alt="shape">
+                        </div>
+                        <div class="hero-shape4" data-ani="slidebottomright" data-ani-delay="0.5s">
+                            <img src="{% static 'assets/img/hero/hero_shape_2_1.png' %}" alt="shape">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="icon-box">
+            <button data-slider-prev="#heroSlider2" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
+            <button data-slider-next="#heroSlider2" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
+        </div>
+    </div>
+    <!--======== / Hero Section ========-->
+    <!--==============================
+About Area  
+==============================-->
+    <div class="overflow-hidden space" id="about-sec">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-xl-6 mb-40 mb-xl-0">
+                    <div class="img-box5">
+                        <div class="shape1">
+                            <img src="{% static 'assets/img/normal/about_3_2.png' %}" alt="About">
+                        </div>
+                        <div class="img1">
+                            <img src="{% static 'assets/img/normal/about_3_1.webp' %}" alt="About">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 text-center text-xl-start">
+                    <div class="title-area mb-32">
+                        <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="shape">About Wamugunda Farm</span>
+                        <h2 class="sec-title">Organic Integrity, Community Impact & Our Story</h2>
+                        <p class="sec-text">At Wamugunda Farm, we believe in farming that restores, nourishes, and sustains. 
+    For nearly three decades, we have practiced organic, soil-friendly agriculture that 
+    prioritizes healthy produce, environmental restoration, and community empowerment. 
+    Every fruit, nut, and vegetable grown here reflects our commitment to natural farming 
+    and the philosophy behind our slogan — <strong>"From Soil to Soul."</strong></p>
+                    </div>
+                    <div class="checklist list-two-column mb-40">
+                        <ul>
+        <li>100% Organic & Naturally Grown Produce</li>
+        <li>No Synthetic Chemicals or Pesticides</li>
+        <li>Fresh, Healthy & Wholesome Foods</li>
+        <li>Fair & Flexible Pricing</li>
+        <li>Environmental & Climate Restoration Focus</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <a href="about.html" class="th-btn">Discover More<i class="fas fa-chevrons-right ms-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--==============================
+Cta Area  
+==============================-->
+    <section class="space-bottom">
+        <div class="container z-index-common">
+            <div class="row gy-30">
+                <div class="col-xxl-4 col-lg-5">
+                    <div class="offer-card mega-hover" data-bg-src="{% static 'assets/img/bg/cta_bg_2_1.jpg' %}">
+                        <span class="h6 box-subtitle">Get Extra <span class="text-theme">50% Off</span></span>
+                        <h3 class="box-title">Fresh Vegetable & <br> Organic Fruits</h3>
+                        <a href="{% url 'shop:shop_list' %}" class="th-btn">Shop Now<i class="fas fa-chevrons-right ms-2"></i></a>
+                    </div>
+                </div>
+                <div class="col-xxl-8 col-lg-7">
+                    <div class="offer-card mega-hover" data-bg-src="{% static 'assets/img/bg/cta_bg_2_2.jpg' %}">
+                        <span class="h6 box-subtitle">Get Extra <span class="text-theme">60% Off</span></span>
+                        <h3 class="box-title">Organic Vegetable & <br> Fresh Fruits</h3>
+                        <a href="{% url 'shop:shop_list' %}" class="th-btn">Shop Now<i class="fas fa-chevrons-right ms-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--==============================
+Service Area  
+==============================-->
+<section class="overflow-hidden bg-smoke2 space" id="service-sec" data-bg-src="{% static 'assets/img/bg/service_bg_1.png' %}">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-7">
+                <div class="title-area text-center">
+                    <span class="sub-title">
+                        <img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">
+                        Our Services
+                    </span>
+                    <h2 class="sec-title">Fresh, Organic & Naturally Grown Produce</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row gy-40 justify-content-center">
+
+            <!-- Service 1: Tomatoes -->
+            <div class="col-xl-4 col-md-6">
+                <div class="service-card">
+                    <div class="box-img">
+                        <img src="{% static 'assets/img/service/service_card_1.jpg' %}" alt="Service">
+                    </div>
+                    <div class="box-icon">
+                        <img src="{% static 'assets/img/icon/service_card_1.svg' %}" alt="Icon">
+                    </div>
+                    <div class="box-content" data-mask-src="{% static 'assets/img/bg/service_card_shape.png' %}">
+                        <h3 class="box-title"><a href="service-details.html">Organic Tomatoes</a></h3>
+                        <p class="box-text">
+                            Ripe & unripe organic tomatoes available at 160 KES/kg — discounted to 100 KES/kg for November.
+                        </p>
+                    </div>
+                    <a href="service-details.html" class="icon-btn"><i class="far fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Service 2: Cooking & Ripening Bananas -->
+            <div class="col-xl-4 col-md-6">
+                <div class="service-card">
+                    <div class="box-img">
+                        <img src="{% static 'assets/img/service/service_card_2.jpg' %}" alt="Service">
+                    </div>
+                    <div class="box-icon">
+                        <img src="{% static 'assets/img/icon/service_card_2.svg' %}" alt="Icon">
+                    </div>
+                    <div class="box-content" data-mask-src="{% static 'assets/img/bg/service_card_shape.png' %}">
+                        <h3 class="box-title"><a href="service-details.html">Cooking & Ripening Bananas</a></h3>
+                        <p class="box-text">
+                            Full cooking and ripening bananas available — perfect for home use, restaurants & bulk orders.
+                        </p>
+                    </div>
+                    <a href="service-details.html" class="icon-btn"><i class="far fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Service 3: Mixed Organic Farm Products -->
+            <div class="col-xl-4 col-md-6">
+                <div class="service-card">
+                    <div class="box-img">
+                        <img src="{% static 'assets/img/service/service_card_3.jpg' %}" alt="Service">
+                    </div>
+                    <div class="box-icon">
+                        <img src="{% static 'assets/img/icon/service_card_3.svg' %}" alt="Icon">
+                    </div>
+                    <div class="box-content" data-mask-src="{% static 'assets/img/bg/service_card_shape.png' %}">
+                        <h3 class="box-title"><a href="service-details.html">Fresh & Natural Produce</a></h3>
+                        <p class="box-text">
+                            Seasonal vegetables, dairy (fresh milk), macadamia nuts, macadamia oil & more — all organically grown.
+                        </p>
+                    </div>
+                    <a href="service-details.html" class="icon-btn"><i class="far fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+    <!--==============================
+Product Area  
+==============================-->
+    <section class="space">
+        <div class="container">
+            <div class="row justify-content-lg-between justify-content-center align-items-end">
+                <div class="col-lg">
+                    <div class="title-area text-center text-lg-start">
+                        <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">Organic Products</span>
+                        <h2 class="sec-title">Organic & Fresh Products Daily!</h2>
+                    </div>
+                </div>
+                <div class="col-lg-auto d-none d-lg-block">
+                    <div class="sec-btn">
+                        <div class="icon-box">
+                            <button data-slider-prev="#productSlider1" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
+                            <button data-slider-next="#productSlider1" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper th-slider has-shadow" id="productSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"2"},"768":{"slidesPerView":"2"},"992":{"slidesPerView":"3"},"1200":{"slidesPerView":"4"}}}'>
+                <div class="swiper-wrapper">
+                    {% for product in featured_products %}
+                    <div class="swiper-slide">
+                        <div class="th-product product-grid">
+                            <div class="product-img">
+                                {% with main_img=product.images.first %}
+                                <a href="{{ product.get_absolute_url }}">
+                                    <img src="{% if main_img %}{{ main_img.image.url }}{% else %}{% static 'assets/img/product/no-image.png' %}{% endif %}" alt="{{ product.name }}">
+                                </a>
+                                {% endwith %}
+
+                                <!-- Tags -->
+                                {% if product.is_hot %}<span class="product-tag">Hot</span>{% endif %}
+                                {% if product.is_new %}<span class="product-tag">New</span>{% endif %}
+                                {% if product.on_sale %}<span class="product-tag">Sale</span>{% endif %}
+
+                                <!-- Hover Actions -->
+                                <div class="actions">
+                                    <a href="{{ product.get_absolute_url }}" class="icon-btn popup-content"><i class="far fa-eye"></i></a>
+                                    <form action="{% url 'cart:cart_add' product.id %}" method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="icon-btn"><i class="far fa-cart-plus"></i></button>
+                                    </form>
+                                    <a href="#" class="icon-btn add-to-wishlist" data-id="{{ product.id }}"><i class="far fa-heart"></i></a>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <a href="#" class="product-category">{{ product.category.name }}</a>
+                                <h3 class="product-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+
+                                <!-- Price -->
+                                <span class="price">
+                                    {% if product.on_sale and product.old_price %}
+                                        KSh {{ product.price }} <del>KSh {{ product.old_price }}</del>
+                                    {% else %}
+                                        KSh {{ product.price }}
+                                    {% endif %}
+                                </span>
+
+                                <!-- Star Rating -->
+                                <div class="woocommerce-product-rating">
+                                    <div class="star-rating">
+                                        <span style="width: {% widthratio product.average_rating 5 100 %}%">
+                                            Rated {{ product.average_rating|floatformat:1 }} out of 5
+                                        </span>
+                                    </div>
+                                    <span class="count">({{ product.review_count }} Reviews)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="swiper-slide">
+                        <div class="th-product product-grid">
+                            <div class="product-img">
+                                <img src="{% static 'assets/img/product/no-image.png' %}" alt="No Products">
+                            </div>
+                            <div class="product-content">
+                                <h3 class="product-title">No Featured Products</h3>
+                                <p class="text-muted">Check back soon for fresh organic products!</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="d-block d-lg-none mt-40 text-center">
+                <div class="icon-box">
+                    <button data-slider-prev="#productSlider1" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
+                    <button data-slider-next="#productSlider1" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--==============================
+Feature Area  
+==============================-->
+<section class="why-sec3 space" data-bg-src="{% static 'assets/img/bg/why_bg_2_2.jpg' %}">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <div class="title-area text-center">
+                    <span class="sub-title">
+                        <img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">
+                        Why Choose Us
+                    </span>
+                    <h2 class="sec-title text-white">Savor the Purity, Taste the Difference!</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row gx-0 justify-content-between">
+            
+            <!-- LEFT FEATURES -->
+            <div class="col-sm-auto">
+                <div class="why-feature-left">
+
+                    <div class="why-feature">
+                        <div class="box-icon">
+                            <img src="{% static 'assets/img/icon/why_feature_1.svg' %}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <div class="box-title">100% Organic Farming</div>
+                            <p class="box-text">All our produce is grown naturally without synthetic chemicals, pesticides, or artificial enhancers.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="why-feature">
+                        <div class="box-icon">
+                            <img src="{% static 'assets/img/icon/why_feature_2.svg' %}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <div class="box-title">Fresh From the Farm</div>
+                            <p class="box-text">We harvest daily to ensure you get farm-fresh vegetables, fruits, milk, and bananas straight from our fields.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="why-feature">
+                        <div class="box-icon">
+                            <img src="{% static 'assets/img/icon/why_feature_3.svg' %}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <div class="box-title">Natural & Sustainable</div>
+                            <p class="box-text">Our farming practices restore the soil, protect the environment, and promote long-term food security.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- CENTER IMAGE -->
+            <div class="col-auto d-none d-lg-block">
+                <div class="img-box4 mt-0">
+                    <img src="{% static 'assets/img/normal/why_3_1.png' %}" alt="Why">
+                </div>
+            </div>
+
+            <!-- RIGHT FEATURES -->
+            <div class="col-sm-auto">
+                <div class="why-feature-right">
+
+                    <div class="why-feature">
+                        <div class="box-icon">
+                            <img src="{% static 'assets/img/icon/why_feature_4.svg' %}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <div class="box-title">Fair Prices</div>
+                            <p class="box-text">We offer honest, community-friendly prices — including discounts on seasonal produce like tomatoes.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="why-feature">
+                        <div class="box-icon">
+                            <img src="{% static 'assets/img/icon/why_feature_5.svg' %}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <div class="box-title">Clean & Trusted Handling</div>
+                            <p class="box-text">Our products are handled with high hygiene standards from harvest to delivery, ensuring top quality.</p>
+                        </div>
+                    </div>
+
+                    <div class="why-feature">
+                        <div class="box-icon">
+                            <img src="{% static 'assets/img/icon/why_feature_6.svg' %}" alt="">
+                        </div>
+                        <div class="media-body">
+                            <div class="box-title">Consistent Daily Supply</div>
+                            <p class="box-text">Whether it's milk, eggs, bananas, or fresh vegetables — we supply daily without interruption.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+    <!--==============================
+Process Area  
+==============================-->
+    <section class="space" id="process-sec">
+    <div class="shape-mockup" data-top="0" data-left="0">
+        <img src="{% static 'assets/img/shape/vector_shape_7.png' %}" alt="shape">
+    </div>
+    <div class="shape-mockup" data-bottom="0" data-right="0">
+        <img src="{% static 'assets/img/shape/vector_shape_6.png' %}" alt="shape">
+    </div>
+
+    <div class="container">
+        <div class="title-area text-center">
+            <span class="sub-title">
+                <img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">
+                How We Produce Quality Food
+            </span>
+            <h2 class="sec-title">Our Organic Farming Process</h2>
+        </div>
+
+        <div class="row gy-4 justify-content-center">
+
+            <!-- STEP 1 -->
+            <div class="col-xl-3 col-md-6 process-box-wrap">
+                <div class="process-box">
+                    <div class="box-icon bg-white">
+                        <img src="{% static 'assets/img/icon/process_box_1.svg' %}" alt="icon">
+                    </div>
+                    <div class="box-img" data-mask-src="{% static 'assets/img/bg/process_bg_shape.png' %}">
+                        <img src="{% static 'assets/img/normal/process_box_1.jpg' %}" alt="image">
+                    </div>
+                    <p class="box-number">Step - 01</p>
+                    <h3 class="box-title">Soil Preparation</h3>
+                    <p class="box-text">
+                        We begin by enriching the soil using natural compost, manure, and organic matter to create a fertile, chemical-free foundation.
+                    </p>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="col-xl-3 col-md-6 process-box-wrap">
+                <div class="process-box">
+                    <div class="box-icon bg-white">
+                        <img src="{% static 'assets/img/icon/process_box_2.svg' %}" alt="icon">
+                    </div>
+                    <div class="box-img" data-mask-src="{% static 'assets/img/bg/process_bg_shape.png' %}">
+                        <img src="{% static 'assets/img/normal/process_box_2.jpg' %}" alt="image">
+                    </div>
+                    <p class="box-number">Step - 02</p>
+                    <h3 class="box-title">Organic Growing</h3>
+                    <p class="box-text">
+                        Seeds and crops are grown naturally—without synthetic fertilizers or pesticides—to preserve purity and nutritional value.
+                    </p>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="col-xl-3 col-md-6 process-box-wrap">
+                <div class="process-box">
+                    <div class="box-icon bg-white">
+                        <img src="{% static 'assets/img/icon/process_box_3.svg' %}" alt="icon">
+                    </div>
+                    <div class="box-img" data-mask-src="{% static 'assets/img/bg/process_bg_shape.png' %}">
+                        <img src="{% static 'assets/img/normal/process_box_3.jpg' %}" alt="image">
+                    </div>
+                    <p class="box-number">Step - 03</p>
+                    <h3 class="box-title">Daily Harvesting</h3>
+                    <p class="box-text">
+                        We handpick fresh vegetables, fruits, milk, eggs, macadamia, and bananas every morning to guarantee peak freshness.
+                    </p>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="col-xl-3 col-md-6 process-box-wrap">
+                <div class="process-box">
+                    <div class="box-icon bg-white">
+                        <img src="{% static 'assets/img/icon/process_box_4.svg' %}" alt="icon">
+                    </div>
+                    <div class="box-img" data-mask-src="{% static 'assets/img/bg/process_bg_shape.png' %}">
+                        <img src="{% static 'assets/img/normal/process_box_4.jpg' %}" alt="image">
+                    </div>
+                    <p class="box-number">Step - 04</p>
+                    <h3 class="box-title">Packaging & Delivery</h3>
+                    <p class="box-text">
+                        All produce is cleaned, packed neatly, and delivered to customers with care—ensuring freshness from our farm to your home.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!--==============================
+Faq Area
+==============================-->
+    <div class="bg-smoke2 space overflow-hidden" id="faq-sec" data-bg-src="{% static 'assets/img/bg/faq_bg_1.png' %}">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-5">
+                <div class="faq-img1">
+                    <div class="img1">
+                        <img src="{% static 'assets/img/normal/faq_1_1.jpg' %}" alt="faq">
+                    </div>
+                    <div class="shape1">
+                        <img src="{% static 'assets/img/bg/vector_shape_1.png' %}" alt="shape">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-7 text-center text-xl-start align-self-center">
+                <div class="ps-xl-4">
+                    <div class="title-area text-center text-xl-start pe-xxl-5">
+                        <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">Looking For Answers?</span>
+                        <h2 class="sec-title">Frequently Asked Questions</h2>
+                    </div>
+
+                    <div class="accordion" id="faqAccordion">
+
+                        <!-- FAQ 1 -->
+                        <div class="accordion-card">
+                            <div class="accordion-header" id="collapse-item-1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                    Do I need to be at home when you deliver?
+                                </button>
+                            </div>
+                            <div id="collapse-1" class="accordion-collapse collapse show" aria-labelledby="collapse-item-1" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p class="faq-text">
+                                        Not necessarily 😊. If you are not home, we can leave your order at your preferred drop-off point. 
+                                        Our delivery team will also contact you to confirm arrival. 
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 2 -->
+                        <div class="accordion-card">
+                            <div class="accordion-header" id="collapse-item-2">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+                                    Do I have to order every week?
+                                </button>
+                            </div>
+                            <div id="collapse-2" class="accordion-collapse collapse" aria-labelledby="collapse-item-2" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p class="faq-text">
+                                        No. You can order anytime you want.  
+                                        We also offer optional weekly and monthly subscription baskets for customers who prefer consistent deliveries. 
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 3 -->
+                        <div class="accordion-card">
+                            <div class="accordion-header" id="collapse-item-3">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                                    Are your products genuinely organic?
+                                </button>
+                            </div>
+                            <div id="collapse-3" class="accordion-collapse collapse" aria-labelledby="collapse-item-3" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p class="faq-text">
+                                        Yes. All our crops are grown without synthetic fertilizers, pesticides, or GMO seeds.  
+                                        We follow strict organic farming standards and sustainable farm practices.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 4 -->
+                        <div class="accordion-card">
+                            <div class="accordion-header" id="collapse-item-4">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+                                    What is your pricing structure?
+                                </button>
+                            </div>
+                            <div id="collapse-4" class="accordion-collapse collapse" aria-labelledby="collapse-item-4" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    <p class="faq-text">
+                                        Pricing varies depending on season and availability, but we always ensure fair, affordable rates for all our products.  
+                                        Bulk orders and subscription customers enjoy special discounts.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> <!-- end accordion -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!--==============================
+Gallery Area  
+==============================-->
+    <div class="bg-top-center space-top" data-bg-src="{% static 'assets/img/bg/gallery_bg_1.jpg' %}">
+        <div class="container">
+            <div class="row justify-content-lg-between justify-content-center align-items-end">
+                <div class="col-lg">
+                    <div class="title-area text-center text-lg-start">
+                        <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">Our Photo Gallery</span>
+                        <h2 class="sec-title text-white">Insite Our Farming Gallery</h2>
+                    </div>
+                </div>
+                <div class="col-lg-auto d-none d-lg-block">
+                    <div class="sec-btn">
+                        <div class="icon-box">
+                            <button data-slider-prev="#gallerySlider1" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
+                            <button data-slider-next="#gallerySlider1" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container container-gallery">
+            <div class="swiper th-slider has-shadow" id="gallerySlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"1"},"768":{"slidesPerView":"2"},"992":{"slidesPerView":"2"},"1200":{"slidesPerView":"3"},"1400":{"slidesPerView":"4"}}}'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="box-img">
+                                <img src="{% static 'assets/img/gallery/gallery_1_1.jpg' %}" alt="gallery image">
+                                <a href="{% static 'assets/img/gallery/gallery_1_1.jpg' %}" class="icon-btn style2 popup-image"><i class="far fa-plus"></i></a>
+                            </div>
+                            <div class="box-content">
+                                <p class="box-subtitle">Fresh Food & Vegetables</p>
+                                <h3 class="box-title"><a href="project-details.html">Fresh Vegetables</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="box-img">
+                                <img src="{% static 'assets/img/gallery/gallery_1_2.jpg' %}" alt="gallery image">
+                                <a href="{% static 'assets/img/gallery/gallery_1_2.jpg' %}" class="icon-btn style2 popup-image"><i class="far fa-plus"></i></a>
+                            </div>
+                            <div class="box-content">
+                                <p class="box-subtitle">Fresh Food & Vegetables</p>
+                                <h3 class="box-title"><a href="project-details.html">Organic Vegetables</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="box-img">
+                                <img src="{% static 'assets/img/gallery/gallery_1_3.jpg' %}" alt="gallery image">
+                                <a href="{% static 'assets/img/gallery/gallery_1_3.jpg' %}" class="icon-btn style2 popup-image"><i class="far fa-plus"></i></a>
+                            </div>
+                            <div class="box-content">
+                                <p class="box-subtitle">Fresh Food & Vegetables</p>
+                                <h3 class="box-title"><a href="project-details.html">Organic Fruits</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="box-img">
+                                <img src="{% static 'assets/img/gallery/gallery_1_4.jpg' %}" alt="gallery image">
+                                <a href="{% static 'assets/img/gallery/gallery_1_4.jpg' %}" class="icon-btn style2 popup-image"><i class="far fa-plus"></i></a>
+                            </div>
+                            <div class="box-content">
+                                <p class="box-subtitle">Fresh Food & Vegetables</p>
+                                <h3 class="box-title"><a href="project-details.html">Organic Farming</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="box-img">
+                                <img src="{% static 'assets/img/gallery/gallery_1_1.jpg' %}" alt="gallery image">
+                                <a href="{% static 'assets/img/gallery/gallery_1_1.jpg' %}" class="icon-btn style2 popup-image"><i class="far fa-plus"></i></a>
+                            </div>
+                            <div class="box-content">
+                                <p class="box-subtitle">Fresh Food & Vegetables</p>
+                                <h3 class="box-title"><a href="project-details.html">Fresh Vegetables</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="box-img">
+                                <img src="{% static 'assets/img/gallery/gallery_1_2.jpg' %}" alt="gallery image">
+                                <a href="{% static 'assets/img/gallery/gallery_1_2.jpg' %}" class="icon-btn style2 popup-image"><i class="far fa-plus"></i></a>
+                            </div>
+                            <div class="box-content">
+                                <p class="box-subtitle">Fresh Food & Vegetables</p>
+                                <h3 class="box-title"><a href="project-details.html">Organic Vegetables</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="box-img">
+                                <img src="{% static 'assets/img/gallery/gallery_1_3.jpg' %}" alt="gallery image">
+                                <a href="{% static 'assets/img/gallery/gallery_1_3.jpg' %}" class="icon-btn style2 popup-image"><i class="far fa-plus"></i></a>
+                            </div>
+                            <div class="box-content">
+                                <p class="box-subtitle">Fresh Food & Vegetables</p>
+                                <h3 class="box-title"><a href="project-details.html">Organic Fruits</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="gallery-card">
+                            <div class="box-img">
+                                <img src="{% static 'assets/img/gallery/gallery_1_4.jpg' %}" alt="gallery image">
+                                <a href="{% static 'assets/img/gallery/gallery_1_4.jpg' %}" class="icon-btn style2 popup-image"><i class="far fa-plus"></i></a>
+                            </div>
+                            <div class="box-content">
+                                <p class="box-subtitle">Fresh Food & Vegetables</p>
+                                <h3 class="box-title"><a href="project-details.html">Organic Farming</a></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-block d-lg-none mt-40 text-center">
+                <div class="icon-box">
+                    <button data-slider-prev="#gallerySlider1" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
+                    <button data-slider-next="#gallerySlider1" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--==============================
+Testimonial Area  
+==============================-->
+    <section class="overflow-hidden space" id="testi-sec">
+        <div class="container">
+            <div class="title-area text-center">
+                <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">Testimonials</span>
+                <h2 class="sec-title">Our Customer Feedback</h2>
+            </div>
+            <div class="testi-box-area" data-bg-src="{% static 'assets/img/bg/testi_bg_2.png' %}">
+                <div class="testi-box-img">
+                    <img src="{% static 'assets/img/testimonial/testi_2_1.jpg' %}" alt="Image">
+                </div>
+                <div class="testi-box-shape">
+                    <img src="{% static 'assets/img/bg/testi_box_shape.png' %}" alt="image">
+                </div>
+                <div class="testi-box-slide">
+                    <div class="swiper th-slider" id="testiSlide2" data-slider-options='{"effect":"slide"}'>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="testi-box">
+                                    <p class="testi-box_text">"Diversity is a cornerstone of our farming philosophy. We carefully select a wide range of crops, ensuring a varied and balanced ecosystem. This not only helps to naturally deter pests and diseases but also promotes soil health by varying the nutrient demands of different plants."</p>
+                                    <h3 class="testi-box_name">Angelina Margret</h3>
+                                    <span class="testi-box_desig">Customer of Our Shop</span>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="testi-box">
+                                    <p class="testi-box_text">"Diversity is a cornerstone of our farming philosophy. We carefully select a wide range of crops, ensuring a varied and balanced ecosystem. This not only helps to naturally deter pests and diseases but also promotes soil health by varying the nutrient demands of different plants."</p>
+                                    <h3 class="testi-box_name">Alexan Micelito</h3>
+                                    <span class="testi-box_desig">Customer of Our Shop</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testi-box_quote">
+                        <img src="{% static 'assets/img/testimonial/quote_1.png' %}" alt="Image">
+                    </div>
+                    <div class="icon-box">
+                        <button data-slider-prev="#testiSlide2" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
+                        <button data-slider-next="#testiSlide2" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!--==============================
+Brand Area  
+==============================-->
+    <div class="py-5 mt-1 bg-smoke2">
+        <div class="container th-container py-md-4">
+            <div class="swiper th-slider" id="blogSlider1" data-slider-options='{"breakpoints":{"0":{"slidesPerView":2},"576":{"slidesPerView":"2"},"768":{"slidesPerView":"3"},"992":{"slidesPerView":"4"},"1200":{"slidesPerView":"5"},"1400":{"slidesPerView":"6"}}}'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_1.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_2.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_3.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_4.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_5.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_6.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_7.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_1.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_2.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_3.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_4.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_5.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_6.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="brand-box">
+                            <img src="{% static 'assets/img/brand/brand_1_7.svg' %}" alt="Brand Logo">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Simple wishlist (saved in browser)
+    document.querySelectorAll('.add-to-wishlist').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const id = btn.dataset.id;
+            let list = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            if (!list.includes(id)) {
+                list.push(id);
+                localStorage.setItem('wishlist', JSON.stringify(list));
+                btn.innerHTML = '<i class="fas fa-heart text-danger"></i>';
+                alert('Added to wishlist!');
+            }
+        });
+    });
+</script>
+{% endblock %}

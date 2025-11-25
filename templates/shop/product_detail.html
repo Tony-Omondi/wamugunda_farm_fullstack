@@ -1,0 +1,510 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} - Wamugunda Farm{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb -->
+<div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/bg/breadcumb-bg.jpg' %}">
+    <div class="container">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">Shop Details</h1>
+            <ul class="breadcumb-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'shop:shop_list' %}">Shop</a></li>
+                <li>{{ product.name }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Product Details -->
+<section class="product-details space-top space-extra-bottom">
+    <div class="container">
+        <div class="row gx-60">
+            <!-- Product Images -->
+            <div class="col-lg-6">
+                <div class="product-image-slider">
+                    <!-- Main Image Slider -->
+                    <div class="swiper product-main-slider">
+                        <div class="swiper-wrapper">
+                            {% if main_image %}
+                                <div class="swiper-slide">
+                                    <div class="product-big-img">
+                                        <img src="{{ main_image.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            {% for img in gallery_images %}
+                                <div class="swiper-slide">
+                                    <div class="product-big-img">
+                                        <img src="{{ img.image.url }}" alt="{{ product.name }} - Image {{ forloop.counter }}" class="img-fluid">
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+                            {% if not main_image and not gallery_images %}
+                                <div class="swiper-slide">
+                                    <div class="product-big-img">
+                                        <img src="{% static 'assets/img/product/no-image.png' %}" alt="{{ product.name }}">
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Navigation Arrows -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        
+                        <!-- Pagination -->
+                        <div class="swiper-pagination"></div>
+                    </div>
+
+                    <!-- Thumbnail Slider -->
+                    {% if gallery_images.count > 0 or main_image %}
+                    <div class="swiper product-thumb-slider mt-3">
+                        <div class="swiper-wrapper">
+                            {% if main_image %}
+                                <div class="swiper-slide">
+                                    <div class="thumb-img">
+                                        <img src="{{ main_image.image.url }}" alt="Thumbnail" class="img-fluid">
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            {% for img in gallery_images %}
+                                <div class="swiper-slide">
+                                    <div class="thumb-img">
+                                        <img src="{{ img.image.url }}" alt="Thumbnail {{ forloop.counter }}" class="img-fluid">
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-lg-6 align-self-center">
+                <div class="product-about">
+                    <!-- Price -->
+                    <p class="price h3 fw-bold text-success">
+                        {% if product.on_sale and product.old_price %}
+                            KSh {{ product.price }} <del class="text-muted fs-5">KSh {{ product.old_price }}</del>
+                        {% else %}
+                            KSh {{ product.price }}
+                        {% endif %}
+                    </p>
+
+                    <h2 class="product-title">{{ product.name }}</h2>
+
+                    <!-- Rating -->
+                    <div class="product-rating mb-3">
+                        <div class="star-rating d-inline-block">
+                            <span style="width: {% widthratio product.average_rating 5 100 %}%">
+                                Rated {{ product.average_rating|floatformat:1 }} out of 5
+                            </span>
+                        </div>
+                        <a href="#reviews" class="woocommerce-review-link ms-2">
+                            ({{ product.reviews.count }} customer reviews)
+                        </a>
+                    </div>
+
+                    <p class="text">{{ product.description|linebreaks }}</p>
+
+                    <!-- Availability -->
+                    <div class="mt-3">
+                        <p>
+                            <strong class="text-title me-3">Availability:</strong>
+                            {% if product.available %}
+                                <span class="stock in-stock"><i class="far fa-check-square me-2"></i>In Stock</span>
+                            {% else %}
+                                <span class="stock out-of-stock text-danger"><i class="far fa-times-circle me-2"></i>Out of Stock</span>
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <!-- Add to Cart Form -->
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post" class="actions d-flex align-items-center gap-3 mt-4">
+                        {% csrf_token %}
+                        <div class="quantity">
+                            <input type="number" name="quantity" value="1" min="1" class="qty-input" required>
+                            <button type="button" class="quantity-plus qty-btn"><i class="far fa-chevron-up"></i></button>
+                            <button type="button" class="quantity-minus qty-btn"><i class="far fa-chevron-down"></i></button>
+                        </div>
+                        <button type="submit" class="th-btn btn-lg">Add to Cart</button>
+                        <a href="#" class="icon-btn add-to-wishlist" data-id="{{ product.id }}">
+                            <i class="far fa-heart"></i>
+                        </a>
+                    </form>
+
+                    <!-- WhatsApp Order Button -->
+                    <div class="mt-4">
+                        <a href="https://wa.me/2547XXXXXXXX?text=Hello!%20I%20want%20to%20order:%20{{ product.name }}%20-%20KSh{{ product.price }}"
+                           target="_blank" class="th-btn btn-success">
+                            <i class="fab fa-whatsapp"></i> Order via WhatsApp
+                        </a>
+                    </div>
+
+                    <!-- Meta -->
+                    <div class="product_meta mt-4">
+                        <span class="sku_wrapper">SKU: <span class="sku">{{ product.sku|default:"N/A" }}</span></span>
+                        <span class="posted_in">Category: <a href="#">{{ product.category.name }}</a></span>
+                        {% if product.tags %}
+                        <span>Tags: 
+                            {% with product.tags.split as tag_list %}
+                                {% for tag in tag_list %}
+                                    <a href="#">{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs: Description & Reviews -->
+        <ul class="nav product-tab-style1 mt-5" id="productTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link th-btn active" data-bs-toggle="tab" href="#description">Product Description</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link th-btn" data-bs-toggle="tab" href="#reviews">Customer Reviews ({{ product.reviews.count }})</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="productTabContent">
+            <div class="tab-pane fade show active" id="description">
+                <div class="p-4 bg-light rounded">
+                    {{ product.description|linebreaks }}
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="reviews">
+                <div class="woocommerce-Reviews">
+                    <!-- Reviews List -->
+                    <div class="th-comments-wrap">
+                        {% for review in reviews %}
+                        <div class="review th-comment-item mb-4 p-4 border rounded">
+                            <div class="comment-content">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h4 class="name mb-0">{{ review.name }}</h4>
+                                    <span class="commented-on text-muted">
+                                        <i class="far fa-calendar me-1"></i>{{ review.created|date:"d M, Y" }}
+                                    </span>
+                                </div>
+                                <div class="star-rating d-inline-block mb-2">
+                                    <span style="width: {% widthratio review.rating 5 100 %}%">
+                                        Rated {{ review.rating }} out of 5
+                                    </span>
+                                </div>
+                                <p class="text mt-2 mb-0">{{ review.comment }}</p>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-4">
+                            <p class="text-muted">No reviews yet. Be the first to review this product!</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Review Form -->
+                    {% if product.available %}
+                    <div class="th-comment-form mt-5 p-4 border rounded bg-light">
+                        <h3 class="mb-4">Add a Review</h3>
+                        <form action="{% url 'shop:product_detail' product.slug %}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-12 form-group rating-select d-flex align-items-center mb-3">
+                                    <label class="me-3 fw-bold">Your Rating:</label>
+                                    <div class="stars">
+                                        <input type="radio" name="rating" value="5" id="star5" required>
+                                        <label for="star5" title="5 stars">★</label>
+                                        <input type="radio" name="rating" value="4" id="star4" required>
+                                        <label for="star4" title="4 stars">★</label>
+                                        <input type="radio" name="rating" value="3" id="star3" required>
+                                        <label for="star3" title="3 stars">★</label>
+                                        <input type="radio" name="rating" value="2" id="star2" required>
+                                        <label for="star2" title="2 stars">★</label>
+                                        <input type="radio" name="rating" value="1" id="star1" required>
+                                        <label for="star1" title="1 star">★</label>
+                                    </div>
+                                </div>
+                                <div class="col-12 form-group mb-3">
+                                    <textarea name="comment" class="form-control" placeholder="Write your review here..." rows="5" required></textarea>
+                                </div>
+                                <div class="col-md-6 form-group mb-3">
+                                    <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="col-md-6 form-group mb-3">
+                                    <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                                </div>
+                                <div class="col-12 form-group mt-3">
+                                    <button type="submit" class="th-btn">Submit Review</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        {% if related_products %}
+        <div class="space-extra-top">
+            <h2 class="sec-title text-center mb-4">Related Products</h2>
+            <div class="swiper th-slider has-shadow" id="relatedSlider" data-slider-options='{"slidesPerView":4,"spaceBetween":30,"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":2},"992":{"slidesPerView":3},"1200":{"slidesPerView":4}}}'>
+                <div class="swiper-wrapper">
+                    {% for rel in related_products %}
+                    <div class="swiper-slide">
+                        <div class="th-product product-grid">
+                            <div class="product-img">
+                                <a href="{{ rel.get_absolute_url }}">
+                                    <img src="{% if rel.images.first %}{{ rel.images.first.image.url }}{% else %}{% static 'assets/img/product/no-image.png' %}{% endif %}" alt="{{ rel.name }}">
+                                </a>
+                                {% if rel.is_hot %}<span class="product-tag">Hot</span>{% endif %}
+                                {% if rel.is_new %}<span class="product-tag">New</span>{% endif %}
+                                {% if rel.on_sale %}<span class="product-tag">Sale</span>{% endif %}
+                                <div class="actions">
+                                    <a href="{{ rel.get_absolute_url }}" class="icon-btn"><i class="far fa-eye"></i></a>
+                                    <form action="{% url 'cart:cart_add' rel.id %}" method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="icon-btn"><i class="far fa-cart-plus"></i></button>
+                                    </form>
+                                    <a href="#" class="icon-btn add-to-wishlist" data-id="{{ rel.id }}"><i class="far fa-heart"></i></a>
+                                </div>
+                            </div>
+                            <div class="product-content text-center">
+                                <a href="#" class="product-category small">{{ rel.category.name }}</a>
+                                <h3 class="product-title"><a href="{{ rel.get_absolute_url }}">{{ rel.name }}</a></h3>
+                                <span class="price">KSh {{ rel.price }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Navigation for Related Products -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    // Initialize Product Image Slider
+    document.addEventListener('DOMContentLoaded', function() {
+        // Main product image slider
+        const mainSlider = new Swiper('.product-main-slider', {
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            thumbs: {
+                swiper: {
+                    el: '.product-thumb-slider',
+                    slidesPerView: 4,
+                    spaceBetween: 10,
+                    freeMode: true,
+                    watchSlidesProgress: true,
+                },
+            },
+        });
+
+        // Thumbnail slider
+        const thumbSlider = new Swiper('.product-thumb-slider', {
+            spaceBetween: 10,
+            slidesPerView: 4,
+            freeMode: true,
+            watchSlidesProgress: true,
+        });
+
+        // Related products slider
+        const relatedSlider = new Swiper('#relatedSlider', {
+            slidesPerView: 4,
+            spaceBetween: 30,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                0: {
+                    slidesPerView: 1
+                },
+                576: {
+                    slidesPerView: 2
+                },
+                992: {
+                    slidesPerView: 3
+                },
+                1200: {
+                    slidesPerView: 4
+                }
+            }
+        });
+
+        // Quantity buttons
+        document.querySelectorAll('.quantity-plus').forEach(btn => {
+            btn.addEventListener('click', () => {
+                let input = btn.parentElement.querySelector('.qty-input');
+                input.value = parseInt(input.value) + 1;
+            });
+        });
+        
+        document.querySelectorAll('.quantity-minus').forEach(btn => {
+            btn.addEventListener('click', () => {
+                let input = btn.parentElement.querySelector('.qty-input');
+                if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+            });
+        });
+
+        // Wishlist functionality
+        document.querySelectorAll('.add-to-wishlist').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                const id = btn.dataset.id;
+                let list = JSON.parse(localStorage.getItem('wishlist') || '[]');
+                if (!list.includes(id)) {
+                    list.push(id);
+                    localStorage.setItem('wishlist', JSON.stringify(list));
+                    btn.innerHTML = '<i class="fas fa-heart text-danger"></i>';
+                    
+                    // Show success message
+                    const toast = document.createElement('div');
+                    toast.className = 'alert alert-success position-fixed top-0 end-0 m-3';
+                    toast.style.zIndex = '9999';
+                    toast.innerHTML = 'Product added to wishlist!';
+                    document.body.appendChild(toast);
+                    
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 3000);
+                } else {
+                    // Remove from wishlist if already exists
+                    list = list.filter(item => item !== id);
+                    localStorage.setItem('wishlist', JSON.stringify(list));
+                    btn.innerHTML = '<i class="far fa-heart"></i>';
+                    
+                    const toast = document.createElement('div');
+                    toast.className = 'alert alert-info position-fixed top-0 end-0 m-3';
+                    toast.style.zIndex = '9999';
+                    toast.innerHTML = 'Product removed from wishlist!';
+                    document.body.appendChild(toast);
+                    
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 3000);
+                }
+            });
+        });
+
+        // Star rating interaction
+        document.querySelectorAll('.stars input').forEach(star => {
+            star.addEventListener('change', function() {
+                const labels = this.parentElement.querySelectorAll('label');
+                labels.forEach(label => label.classList.remove('active'));
+                
+                let current = this;
+                while (current = current.previousElementSibling) {
+                    current.nextElementSibling.querySelector('label').classList.add('active');
+                }
+                this.nextElementSibling.classList.add('active');
+            });
+        });
+    });
+</script>
+
+<style>
+    .product-image-slider {
+        position: relative;
+    }
+    
+    .product-main-slider .swiper-slide {
+        text-align: center;
+    }
+    
+    .product-main-slider .product-big-img {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .thumb-img {
+        border: 2px solid transparent;
+        border-radius: 5px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+    }
+    
+    .thumb-img:hover,
+    .thumb-img.swiper-slide-thumb-active {
+        border-color: #28a745;
+    }
+    
+    .thumb-img img {
+        transition: transform 0.3s ease;
+    }
+    
+    .thumb-img:hover img {
+        transform: scale(1.05);
+    }
+    
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #28a745;
+        background: rgba(255, 255, 255, 0.8);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+        font-size: 18px;
+    }
+    
+    .stars {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+    
+    .stars input {
+        display: none;
+    }
+    
+    .stars label {
+        color: #ddd;
+        cursor: pointer;
+        font-size: 24px;
+        margin-right: 5px;
+        transition: color 0.2s;
+    }
+    
+    .stars label:hover,
+    .stars label:hover ~ label,
+    .stars input:checked ~ label,
+    .stars label.active {
+        color: #ffc107;
+    }
+    
+    .review .star-rating {
+        color: #ffc107;
+    }
+</style>
+{% endblock %}

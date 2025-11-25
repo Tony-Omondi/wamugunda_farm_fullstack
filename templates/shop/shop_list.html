@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shop - Wamugunda Farm{% endblock %}
+
+{% block content %}
+
+<!--==============================
+    Breadcumb
+============================== -->
+<div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/bg/breadcumb-bg.jpg' %}">
+    <div class="container">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">Shop</h1>
+            <ul class="breadcumb-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li>Shop</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--==============================
+Product Area
+==============================-->
+<section class="space-top space-extra-bottom">
+    <div class="container">
+
+        <!-- Sorting Bar -->
+        <div class="th-sort-bar">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-md">
+                    <p class="woocommerce-result-count">
+                        Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} results
+                    </p>
+                </div>
+                <div class="col-md-auto">
+                    <form class="woocommerce-ordering" method="get">
+                        <select name="orderby" class="orderby" onchange="this.form.submit()">
+                            <option value="">Default Sorting</option>
+                            <option value="latest" {% if request.GET.orderby == 'latest' %}selected{% endif %}>Sort by latest</option>
+                            <option value="price" {% if request.GET.orderby == 'price' %}selected{% endif %}>Sort by price: low to high</option>
+                            <option value="price-desc" {% if request.GET.orderby == 'price-desc' %}selected{% endif %}>Sort by price: high to low</option>
+                            <option value="rating" {% if request.GET.orderby == 'rating' %}selected{% endif %}>Sort by rating</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="row gy-40">
+            {% for product in products %}
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+                <div class="th-product product-grid">
+
+                    <div class="product-img">
+                        {% with main_img=product.images.first %}
+                        <a href="{{ product.get_absolute_url }}">
+                            <img src="{% if main_img %}{{ main_img.image.url }}{% else %}{% static 'assets/img/product/no-image.png' %}{% endif %}" alt="{{ product.name }}">
+                        </a>
+                        {% endwith %}
+
+                        <!-- Tags -->
+                        {% if product.is_hot %}<span class="product-tag">Hot</span>{% endif %}
+                        {% if product.is_new %}<span class="product-tag">New</span>{% endif %}
+                        {% if product.on_sale %}<span class="product-tag">Sale</span>{% endif %}
+
+                        <!-- Hover Actions -->
+                        <div class="actions">
+                            <a href="{{ product.get_absolute_url }}" class="icon-btn popup-content"><i class="far fa-eye"></i></a>
+                            <form action="{% url 'cart:cart_add' product.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="icon-btn"><i class="far fa-cart-plus"></i></button>
+                            </form>
+                            <a href="#" class="icon-btn add-to-wishlist" data-id="{{ product.id }}"><i class="far fa-heart"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="product-content">
+                        <a href="#" class="product-category">{{ product.category.name }}</a>
+                        <h3 class="product-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+
+                        <!-- Price -->
+                        <span class="price">
+                            {% if product.on_sale and product.old_price %}
+                                KSh {{ product.price }} <del>KSh {{ product.old_price }}</del>
+                            {% else %}
+                                KSh {{ product.price }}
+                            {% endif %}
+                        </span>
+
+                        <!-- Star Rating (100% working - no errors) -->
+                        <div class="woocommerce-product-rating">
+                            <div class="star-rating">
+                                <span style="width: {% widthratio product.average_rating 5 100 %}%">
+                                    Rated {{ product.average_rating|floatformat:1 }} out of 5
+                                </span>
+                            </div>
+                            <span class="count">({{ product.review_count }} Reviews)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <h3>No products yet</h3>
+                <p class="text-muted">Fresh from the farm — coming soon!</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="th-pagination text-center pt-50">
+            <ul>
+                {% if page_obj.has_previous %}
+                    <li><a href="?page={{ page_obj.previous_page_number }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}"><i class="far fa-arrow-left"></i></a></li>
+                {% endif %}
+
+                {% for num in paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="active"><a href="#">{{ num }}</a></li>
+                    {% else %}
+                        <li><a href="?page={{ num }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}">{{ num }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}"><i class="far fa-arrow-right"></i></a></li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Simple wishlist (saved in browser)
+    document.querySelectorAll('.add-to-wishlist').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const id = btn.dataset.id;
+            let list = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            if (!list.includes(id)) {
+                list.push(id);
+                localStorage.setItem('wishlist', JSON.stringify(list));
+                btn.innerHTML = '<i class="fas fa-heart text-danger"></i>';
+                alert('Added to wishlist!');
+            }
+        });
+    });
+</script>
+{% endblock %}

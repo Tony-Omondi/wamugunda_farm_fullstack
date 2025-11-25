@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Shopping Cart - Wamugunda Farm{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb -->
+<div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/bg/breadcumb-bg.jpg' %}">
+    <div class="container">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">Shopping Cart</h1>
+            <ul class="breadcumb-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li>Cart</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Cart Area -->
+<div class="th-cart-wrapper space-top space-extra-bottom">
+    <div class="container">
+        {% if cart %}
+        <div class="woocommerce-notices-wrapper">
+            <div class="woocommerce-message alert alert-success">
+                <i class="fas fa-truck me-2"></i> Shipping costs included according to your delivery zone
+            </div>
+        </div>
+
+        <form action="{% url 'cart:cart_update' %}" method="post" class="woocommerce-cart-form">
+            {% csrf_token %}
+            <table class="cart_table">
+                <thead>
+                    <tr>
+                        <th class="cart-col-image">Image</th>
+                        <th class="cart-col-productname">Product</th>
+                        <th class="cart-col-price">Price</th>
+                        <th class="cart-col-quantity">Quantity</th>
+                        <th class="cart-col-total">Total</th>
+                        <th class="cart-col-remove">Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    <tr class="cart_item">
+                        <td>
+                            <a href="{{ item.product.get_absolute_url }}">
+                                <img src="{% if item.product.images.first %}{{ item.product.images.first.image.url }}{% else %}{% static 'assets/img/product/no-image.png' %}{% endif %}"
+                                     alt="{{ item.product.name }}" width="91" height="91" class="rounded">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ item.product.get_absolute_url }}" class="cart-productname fw-bold">
+                                {{ item.product.name }}
+                            </a>
+                        </td>
+                        <td>
+                            <span class="amount text-success">KSh {{ item.price }}</span>
+                        </td>
+                        <td>
+                            <div class="quantity">
+                                <button type="button" class="quantity-minus qty-btn" onclick="updateQuantity('{{ item.product.id }}', -1)">
+                                    <i class="far fa-minus"></i>
+                                </button>
+                                <input type="number" 
+                                       name="quantity_{{ item.product.id }}" 
+                                       value="{{ item.quantity }}" 
+                                       min="1" 
+                                       class="qty-input" 
+                                       readonly>
+                                <button type="button" class="quantity-plus qty-btn" onclick="updateQuantity('{{ item.product.id }}', 1)">
+                                    <i class="far fa-plus"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="amount fw-bold text-success">KSh {{ item.total_price }}</span>
+                        </td>
+                        <td>
+                            <a href="{% url 'cart:cart_remove' item.product.id %}" 
+                               class="remove" 
+                               onclick="return confirm('Remove {{ item.product.name }} from cart?')">
+                                <i class="fal fa-trash-alt text-danger fs-4"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    <tr>
+                        <td colspan="6" class="actions text-end py-3">
+                            <button type="submit" class="th-btn me-3">Update Cart</button>
+                            <a href="{% url 'shop:shop_list' %}" class="th-btn style2">Continue Shopping</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+
+        <!-- Cart Totals + Shipping Zone Selector -->
+        <div class="row justify-content-end mt-5">
+            <div class="col-md-8 col-lg-7 col-xl-6">
+                <h2 class="h4 summary-title mb-4">Cart Totals</h2>
+                <table class="cart_totals border rounded p-4 bg-light">
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">Cart Subtotal</td>
+                            <td class="text-end">KSh {{ cart.get_total_price }}</td>
+                        </tr>
+
+                        <!-- SHIPPING ZONE SELECTOR -->
+                        <tr class="shipping">
+                            <th class="pt-3">Delivery Zone</th>
+                            <td class="pt-3">
+                                <form method="post" action="{% url 'cart:set_shipping_zone' %}">
+                                    {% csrf_token %}
+                                    <select name="shipping_zone" class="form-select" onchange="this.form.submit()">
+                                        <option value="">-- Select Delivery Zone --</option>
+                                        {% for zone, cost in shipping_zones.items %}
+                                        <option value="{{ zone }}" {% if selected_zone == zone %}selected{% endif %}>
+                                            {{ zone }} → KSh {{ cost }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </form>
+
+                                {% if selected_zone %}
+                                <p class="mt-3 mb-0 text-success">
+                                    <strong>Delivering to:</strong> {{ selected_zone }}
+                                    <br><small>+ KSh {{ shipping_cost }} delivery fee</small>
+                                </p>
+                                {% else %}
+                                <p class="mt-2 text-muted small">Select your zone to see delivery fee</p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="order-total bg-white">
+                            <td class="h5 fw-bold">Order Total</td>
+                            <td class="text-end">
+                                <strong class="text-success h3">
+                                    KSh {{ cart.get_total_price|add:shipping_cost }}
+                                </strong>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- Proceed to Checkout Button -->
+                <div class="wc-proceed-to-checkout mt-4">
+                    <!-- TEMPORARY LINK UNTIL CHECKOUT IS READY -->
+                    <a href="#" class="th-btn w-100 text-center" id="checkout-btn">
+                        Proceed to Checkout
+                    </a>
+                    <small class="d-block text-center mt-2 text-muted">
+                        Checkout coming soon — Use WhatsApp for now
+                    </small>
+                </div>
+
+                <!-- WhatsApp Order Button -->
+                <div class="mt-4 text-center">
+                    <a href="https://wa.me/254726857007?text={{ whatsapp_message|urlencode }}"
+                       target="_blank" class="th-btn btn-success w-100 fs-5 py-3">
+                        <i class="fab fa-whatsapp fs-3"></i><br>
+                        Order via WhatsApp (Fastest)
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <div class="text-center py-5">
+            <img src="{% static 'assets/img/empty-cart.svg' %}" alt="Empty Cart" width="200">
+            <h3 class="mt-4">Your cart is empty</h3>
+            <p class="text-muted">Fresh from the farm — waiting for your order!</p>
+            <a href="{% url 'shop:shop_list' %}" class="th-btn mt-3">Start Shopping</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateQuantity(productId, change) {
+    const input = document.querySelector(`input[name="quantity_${productId}"]`);
+    if (!input) return;
+    let newQty = parseInt(input.value) + change;
+    if (newQty < 1) newQty = 1;
+    input.value = newQty;
+}
+
+// Optional: Show alert when checkout is clicked
+document.getElementById('checkout-btn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    alert('Checkout with M-Pesa is coming soon!\n\nFor now, use the WhatsApp button to place your order instantly.');
+});
+</script>
+{% endblock %}

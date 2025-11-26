@@ -1,0 +1,375 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <style>
+        @page { 
+            size: A4; 
+            margin: 1.5cm; 
+        }
+        
+        body { 
+            font-family: "Segoe UI", "DejaVu Sans", Arial, sans-serif; 
+            font-size: 14px; 
+            color: #333; 
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+        
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+        
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo { 
+            width: 180px; 
+            height: auto;
+            filter: brightness(0.9);
+        }
+        
+        .right-section { 
+            text-align: right; 
+        }
+        
+        .invoice-title { 
+            font-size: 36px; 
+            font-weight: 800; 
+            color: #2c5530; 
+            margin: 0 0 5px 0; 
+            letter-spacing: 1px;
+        }
+        
+        .invoice-number { 
+            font-size: 16px; 
+            font-weight: 600; 
+            margin: 5px 0; 
+            color: #666;
+        }
+        
+        .balance-due { 
+            font-size: 22px; 
+            font-weight: bold; 
+            color: #d9534f;
+            background: #fff5f5;
+            padding: 8px 15px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .farm-info { 
+            margin: 25px 0; 
+            font-size: 13px;
+            line-height: 1.7;
+            color: #555;
+        }
+        
+        .info-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            margin: 30px 0; 
+            font-size: 13px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        
+        .info-right { 
+            text-align: right; 
+        }
+        
+        .customer { 
+            margin: 20px 0; 
+            font-weight: bold;
+            font-size: 18px;
+            color: #2c5530;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 40px 0; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .table th { 
+            background: #2c5530; 
+            color: white; 
+            padding: 15px 12px; 
+            text-align: left;
+            font-weight: 600;
+            border: none;
+        }
+        
+        .table td { 
+            padding: 15px 12px; 
+            border-bottom: 1px solid #eaeaea; 
+            transition: background 0.2s;
+        }
+        
+        .table tr:hover td {
+            background: #f8f9fa;
+        }
+        
+        .text-right { 
+            text-align: right; 
+        }
+        
+        .total-box { 
+            float: right; 
+            width: 350px; 
+            margin-top: 20px; 
+            background: #f8f9fa;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .total-table { 
+            width: 100%; 
+            border-collapse: collapse;
+        }
+        
+        .total-table td { 
+            padding: 12px 15px; 
+        }
+        
+        .total-row { 
+            background: #f8f9fa; 
+        }
+        
+        .balance-row { 
+            background: #2c5530; 
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .footer { 
+            margin-top: 80px; 
+            font-size: 13px; 
+            color: #555; 
+            line-height: 1.6;
+            padding-top: 25px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .footer p { 
+            margin: 8px 0; 
+        }
+        
+        .payment-info {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        
+        .highlight-box {
+            background: #fff9e6;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c5530;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title:before {
+            content: "";
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background: #2c5530;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+        
+        .contact-info {
+            display: flex;
+            gap: 30px;
+            margin-top: 10px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <div class="logo-container">
+            <img src="{% static 'assets/img/logo.png' %}" class="logo" alt="Wamugunda Farm">
+        </div>
+        <div class="right-section">
+            <h1 class="invoice-title">INVOICE</h1>
+            <div class="invoice-number">Invoice #{{ order.order_id }}</div>
+            <div class="balance-due">KES {{ total|floatformat:2 }}</div>
+        </div>
+    </div>
+
+    <div class="info-grid">
+        <div>
+            <div class="section-title">Invoice Details</div>
+            <strong>Invoice Date:</strong> {{ date }}<br>
+            <strong>Terms:</strong> Due on Receipt<br>
+            <strong>Due Date:</strong> {{ date }}<br>
+            <strong>Status:</strong> <span class="status-badge">UNPAID</span>
+        </div>
+        <div class="info-right">
+            <div class="section-title">Amount Due</div>
+            <span style="font-size:24px; color:#d9534f; font-weight:bold;">KES {{ total|floatformat:2 }}</span><br>
+            <small style="color:#666;">Due upon receipt</small>
+        </div>
+    </div>
+
+    <div class="farm-info">
+        <div class="section-title">From</div>
+        <strong>Wamugunda Farm</strong><br>
+        Pioneer School<br>
+        Muranga, Kenya<br>
+        <div class="contact-info">
+            <div class="contact-item">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                rm2657zxn6@privaterelay.appleid.com
+            </div>
+        </div>
+    </div>
+
+    <div class="customer">
+        <div class="section-title">Bill To</div>
+        Singh
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Rate</th>
+                <th class="text-right">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <strong>{{ item.product.name }}</strong><br>
+                    <small style="color:#666;">White Gold</small>
+                </td>
+                <td class="text-right">{{ item.quantity }}</td>
+                <td class="text-right">KES {{ item.price }}</td>
+                <td class="text-right">KES {{ item.total_price }}</td>
+            </tr>
+            {% endfor %}
+            <tr style="background: #f8f9fa;">
+                <td colspan="3"></td>
+                <td>
+                    <strong>Delivery</strong><br>
+                    <small>{{ shipping_zone }}</small>
+                </td>
+                <td class="text-right">KES {{ shipping_cost }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="total-box">
+        <table class="total-table">
+            <tr class="total-row">
+                <td>Subtotal</td>
+                <td class="text-right">KES {{ total|floatformat:2 }}</td>
+            </tr>
+            <tr class="total-row">
+                <td>Tax (0%)</td>
+                <td class="text-right">KES 0.00</td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>Total</strong></td>
+                <td class="text-right"><strong>KES {{ total|floatformat:2 }}</strong></td>
+            </tr>
+            <tr class="balance-row">
+                <td><strong>Balance Due</strong></td>
+                <td class="text-right"><strong>KES {{ total|floatformat:2 }}</strong></td>
+            </tr>
+        </table>
+    </div>
+    <div style="clear:both;"></div>
+
+    <div class="highlight-box">
+        <strong>Payment Instructions:</strong> Please make payment by the due date to avoid any interruptions to your service.
+    </div>
+
+    <div class="payment-info">
+        <div class="section-title">Payment Details</div>
+        <p>
+            <strong>Paybill:</strong> 540800<br>
+            <strong>Account:</strong> 0726857007<br>
+            <strong>Bank:</strong> Mentor Sacco<br>
+            <strong>Account Name:</strong> Wamugunda Douglas
+        </p>
+    </div>
+
+    <div class="footer">
+        <p><strong>Thank you for your business!</strong></p>
+        <p>If you have any questions about this invoice, please contact us at rm2657zxn6@privaterelay.appleid.com</p>
+        <p style="text-align: center; margin-top: 20px; color: #888; font-size: 12px;">
+            Wamugunda Farm &copy; {{ date|date:"Y" }} | All rights reserved
+        </p>
+    </div>
+
+</div>
+</body>
+</html>

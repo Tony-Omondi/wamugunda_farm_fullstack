@@ -34,3 +34,6 @@ def about(request):
 
 def contact(request):
     return render(request, 'contact.html')
+
+def contact(request):
+    return render(request, 'gallery.html')

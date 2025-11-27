@@ -803,53 +803,63 @@ Faq Area
             </div>
         </div>
     </div>
-    <!--==============================
-    Testimonial Area  
-    ==============================-->
-    <section class="overflow-hidden space" id="testi-sec">
-        <div class="container">
-            <div class="title-area text-center">
-                <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">Testimonials</span>
-                <h2 class="sec-title">Our Customer Feedback</h2>
+   <!--==============================
+Testimonial Area  
+==============================-->
+<section class="overflow-hidden space" id="testi-sec">
+    <div class="container">
+        <div class="title-area text-center">
+            <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">Testimonials</span>
+            <h2 class="sec-title">What Our Customers Say</h2>
+        </div>
+        <div class="testi-box-area" data-bg-src="{% static 'assets/img/bg/testi_bg_2.png' %}">
+            <div class="testi-box-img">
+                <img src="{% static 'assets/img/testimonial/testi_2_1.jpg' %}" alt="Image">
             </div>
-            <div class="testi-box-area" data-bg-src="{% static 'assets/img/bg/testi_bg_2.png' %}">
-                <div class="testi-box-img">
-                    <img src="{% static 'assets/img/testimonial/testi_2_1.jpg' %}" alt="Image">
-                </div>
-                <div class="testi-box-shape">
-                    <img src="{% static 'assets/img/bg/testi_box_shape.png' %}" alt="image">
-                </div>
-                <div class="testi-box-slide">
-                    <div class="swiper th-slider" id="testiSlide2" data-slider-options='{"effect":"slide"}'>
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="testi-box">
-                                    <p class="testi-box_text">"Diversity is a cornerstone of our farming philosophy. We carefully select a wide range of crops, ensuring a varied and balanced ecosystem. This not only helps to naturally deter pests and diseases but also promotes soil health by varying the nutrient demands of different plants."</p>
-                                    <h3 class="testi-box_name">Angelina Margret</h3>
-                                    <span class="testi-box_desig">Customer of Our Shop</span>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="testi-box">
-                                    <p class="testi-box_text">"Diversity is a cornerstone of our farming philosophy. We carefully select a wide range of crops, ensuring a varied and balanced ecosystem. This not only helps to naturally deter pests and diseases but also promotes soil health by varying the nutrient demands of different plants."</p>
-                                    <h3 class="testi-box_name">Alexan Micelito</h3>
-                                    <span class="testi-box_desig">Customer of Our Shop</span>
-                                </div>
+            <div class="testi-box-shape">
+                <img src="{% static 'assets/img/bg/testi_box_shape.png' %}" alt="image">
+            </div>
+            <div class="testi-box-slide">
+                <div class="swiper th-slider" id="testiSlide2" data-slider-options='{"effect":"slide"}'>
+                    <div class="swiper-wrapper">
+                        {% for testimonial in testimonials %}
+                        <div class="swiper-slide">
+                            <div class="testi-box">
+                                <p class="testi-box_text">"{{ testimonial.testimonial_text }}"</p>
+                                <h3 class="testi-box_name">{{ testimonial.client_name }}</h3>
+                                <span class="testi-box_desig">Happy Customer</span>
                             </div>
                         </div>
+                        {% empty %}
+                        <!-- Default testimonials if none exist -->
+                        <div class="swiper-slide">
+                            <div class="testi-box">
+                                <p class="testi-box_text">"The fresh organic vegetables from Wamugunda Farm have transformed our family meals. The quality is exceptional and delivery is always prompt!"</p>
+                                <h3 class="testi-box_name">Sarah Kimani</h3>
+                                <span class="testi-box_desig">Regular Customer</span>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="testi-box">
+                                <p class="testi-box_text">"I've been buying their bananas and tomatoes for months. The taste is incredible and knowing it's all organic gives me peace of mind for my family's health."</p>
+                                <h3 class="testi-box_name">James Mwangi</h3>
+                                <span class="testi-box_desig">Loyal Client</span>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    <div class="testi-box_quote">
-                        <img src="{% static 'assets/img/testimonial/quote_1.png' %}" alt="Image">
-                    </div>
-                    <div class="icon-box">
-                        <button data-slider-prev="#testiSlide2" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
-                        <button data-slider-next="#testiSlide2" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
-                    </div>
+                </div>
+                <div class="testi-box_quote">
+                    <img src="{% static 'assets/img/testimonial/quote_1.png' %}" alt="Image">
+                </div>
+                <div class="icon-box">
+                    <button data-slider-prev="#testiSlide2" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
+                    <button data-slider-next="#testiSlide2" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
                 </div>
             </div>
         </div>
-    </section>
-
+    </div>
+</section>
 
     <!--==============================
     Brand Area  

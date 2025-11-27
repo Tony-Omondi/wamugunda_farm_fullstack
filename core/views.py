@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from shop.models import Product
-from .models import GalleryCategory, GalleryItem
+from .models import GalleryCategory, GalleryItem, Testimonial  # Add Testimonial
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -22,6 +22,11 @@ class HomeView(TemplateView):
         context['new_products'] = Product.objects.filter(
             available=True, is_new=True
         )[:8]
+
+        # ADD TESTIMONIALS
+        context['testimonials'] = Testimonial.objects.filter(
+            is_active=True
+        ).order_by('-created_at')[:5]
 
         return context
 

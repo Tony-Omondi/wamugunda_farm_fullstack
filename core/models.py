@@ -50,3 +50,16 @@ class GalleryItem(models.Model):
         elif '/p/' in self.instagram_url:
             return self.instagram_url.split('/p/')[-1].strip('/')
         return None
+
+# ADD TESTIMONIAL MODEL HERE
+class Testimonial(models.Model):
+    client_name = models.CharField(max_length=100)
+    testimonial_text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Testimonial by {self.client_name}"

@@ -12,6 +12,8 @@ from datetime import datetime
 from shop.models import Product
 from .cart import Cart
 from cart.models import Order  # Your Order model
+from urllib.parse import quote
+
 
 SHIPPING_ZONES = {
     'Thika Road': 250, 'Garden Estate': 250, 'Runda': 300, 'Muthaiga': 300,
@@ -141,23 +143,28 @@ def create_whatsapp_order(request):
         order.pdf_invoice.save(f'invoice_{order.order_id}.pdf', File(pdf_file))
         order.save()
 
-    # WhatsApp Message (Perfect Format)
-    items_text = "%0A".join([
+    # Build the plain text message first
+    items_text = "\n".join([
         f"• {item['quantity']} × {item['product'].name} = KSh {item['total_price']}"
         for item in cart
     ])
 
-    message = (
-        f"*NEW ORDER #%23{order.order_id}*%0A%0A"
-        f"Date: {datetime.now().strftime('%d/%m/%Y %I:%M %p')}%0A%0A"
-        f"*Items:*%0A{items_text}%0A%0A"
-        f"*Delivery Zone:* {selected_zone}%0A"
-        f"*Delivery Fee:* KSh {shipping_cost}%0A"
-        f"*TOTAL:* KSh {total:,}%0A%0A"
-        f"Thank you for your order!"
-    )
+    plain_message = f"""NEW ORDER #{order.order_id}
 
-    whatsapp_url = f"https://wa.me/254726857007?text={message}"
+Date: {datetime.now().strftime('%d/%m/%Y %I:%M %p')}
+
+Items:
+{items_text}
+
+Delivery Zone: {selected_zone}
+Delivery Fee: KSh {shipping_cost}
+TOTAL: KSh {total:,}
+
+Thank you for your order! 🌱"""
+
+    # URL encode the entire message
+    encoded_message = quote(plain_message)
+    whatsapp_url = f"https://wa.me/254726857007?text={encoded_message}"
 
     # Clear cart after order
     cart.clear()

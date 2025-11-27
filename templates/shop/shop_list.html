@@ -28,7 +28,7 @@
                         <div class="input-group">
                             <input type="text" name="q" class="form-control" placeholder="Search products..." 
                                    value="{{ request.GET.q }}">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn th-btn">
                                 <i class="fas fa-search me-2"></i>Search
                             </button>
                         </div>
@@ -36,7 +36,7 @@
                     
                     <!-- Category Filter -->
                     <div class="col-md-4">
-                        <select name="category" class="form-select" onchange="this.form.submit()">
+                        <select name="category" class="form-select th-select" onchange="this.form.submit()">
                             <option value="">All Categories</option>
                             {% for category in categories %}
                             <option value="{{ category.slug }}" 
@@ -50,7 +50,7 @@
                     <!-- Clear Filters -->
                     <div class="col-md-3">
                         {% if request.GET.q or request.GET.category %}
-                        <a href="{% url 'shop:shop_list' %}" class="btn btn-outline-secondary w-100">
+                        <a href="{% url 'shop:shop_list' %}" class="btn th-btn-outline w-100">
                             <i class="fas fa-times me-2"></i>Clear Filters
                         </a>
                         {% endif %}
@@ -61,9 +61,9 @@
             <!-- Sorting -->
             <div class="col-lg-4">
                 <div class="th-sort-bar">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <p class="mb-0">Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} results</p>
-                        <form method="get">
+                    <div class="sort-bar-inner">
+                        <p class="showing-results">Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} results</p>
+                        <form method="get" class="sort-form">
                             <!-- Hidden fields to preserve search and category -->
                             {% if request.GET.q %}
                             <input type="hidden" name="q" value="{{ request.GET.q }}">
@@ -72,7 +72,7 @@
                             <input type="hidden" name="category" value="{{ request.GET.category }}">
                             {% endif %}
                             
-                            <select name="orderby" class="orderby" onchange="this.form.submit()">
+                            <select name="orderby" class="orderby th-select" onchange="this.form.submit()">
                                 <option value="">Default Sorting</option>
                                 <option value="latest" {% if request.GET.orderby == 'latest' %}selected{% endif %}>Latest</option>
                                 <option value="price" {% if request.GET.orderby == 'price' %}selected{% endif %}>Price: Low to High</option>
@@ -171,7 +171,7 @@
                 <h3>No products found</h3>
                 <p>{% if request.GET.q or request.GET.category %}Try adjusting your search or filters{% else %}Fresh from the farm — coming soon!{% endif %}</p>
                 {% if request.GET.q or request.GET.category %}
-                <a href="{% url 'shop:shop_list' %}" class="btn btn-primary mt-3">View All Products</a>
+                <a href="{% url 'shop:shop_list' %}" class="btn th-btn mt-3">View All Products</a>
                 {% endif %}
             </div>
             {% endfor %}
@@ -216,7 +216,7 @@
             <strong>Added to Cart!</strong><br>
             <span id="toastProductName"></span>
         </div>
-        <a href="{% url 'cart:cart_detail' %}" class="btn btn-sm btn-primary ms-4">View Cart</a>
+        <a href="{% url 'cart:cart_detail' %}" class="btn th-btn btn-sm ms-4">View Cart</a>
         <button type="button" class="btn-close-toast ms-3">&times;</button>
     </div>
 </div>
@@ -224,6 +224,159 @@
 
 {% block extra_css %}
 <style>
+/* Theme Green Colors */
+:root {
+    --th-primary: #28a745;
+    --th-primary-dark: #218838;
+    --th-primary-light: #34ce57;
+}
+
+/* Search and Filter Section */
+.th-btn {
+    background: var(--th-primary);
+    border: 2px solid var(--th-primary);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.th-btn:hover {
+    background: var(--th-primary-dark);
+    border-color: var(--th-primary-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.th-btn-outline {
+    background: transparent;
+    border: 2px solid var(--th-primary);
+    color: var(--th-primary);
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.th-btn-outline:hover {
+    background: var(--th-primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.th-select {
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    padding: 10px 15px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: white;
+    width: 100%;
+}
+
+.th-select:focus {
+    border-color: var(--th-primary);
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+    outline: none;
+}
+
+/* Input Group Styling */
+.input-group {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.input-group .form-control {
+    border: 2px solid #e9ecef;
+    border-right: none;
+    padding: 12px 15px;
+    font-size: 14px;
+}
+
+.input-group .form-control:focus {
+    border-color: var(--th-primary);
+    box-shadow: none;
+}
+
+.input-group .th-btn {
+    border-radius: 0;
+    border-left: none;
+    padding: 12px 20px;
+}
+
+/* Sort Bar Styling */
+.th-sort-bar {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+}
+
+.sort-bar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.showing-results {
+    margin: 0;
+    font-weight: 600;
+    color: #495057;
+    font-size: 14px;
+}
+
+.sort-form {
+    flex: 1;
+    max-width: 200px;
+}
+
+/* Active Filters */
+.active-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid var(--th-primary);
+}
+
+.filter-badge {
+    background: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.remove-filter {
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.remove-filter:hover {
+    color: #dc3545;
+    transform: scale(1.1);
+}
+
+/* Toast Notification */
 .cart-toast {
     position: fixed;
     bottom: 30px;
@@ -235,56 +388,118 @@
     display: flex;
     align-items: center;
     z-index: 9999;
-    border-left: 5px solid #28a745;
+    border-left: 5px solid var(--th-primary);
     opacity: 0;
     visibility: hidden;
     transform: translateY(100px);
     transition: all 0.4s ease;
     max-width: 420px;
 }
-.cart-toast.show { opacity: 1; visibility: visible; transform: translateY(0); }
-.toast-body { display: flex; align-items: center; width: 100%; }
-.btn-close-toast { background: none; border: none; font-size: 24px; cursor: pointer; opacity: 0.6; }
-.btn-close-toast:hover { opacity: 1; }
-.product-tag { position: absolute; top: 10px; left: 10px; padding: 4px 10px; font-size: 11px; color: #fff; border-radius: 4px; font-weight: bold; z-index: 2; }
-.product-tag.hot { background: #ff4757; }
-.product-tag.new { background: #2ed573; left: auto; right: 10px; }
-.product-tag.sale { background: #ffa502; }
 
-/* Filter Styles */
-.active-filters { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
-.filter-badge {
-    background: #e9ecef;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 14px;
+.cart-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.toast-body {
     display: flex;
     align-items: center;
-    gap: 8px;
-}
-.remove-filter {
-    color: #6c757d;
-    text-decoration: none;
-    font-size: 18px;
-    line-height: 1;
-    cursor: pointer;
-}
-.remove-filter:hover { color: #dc3545; }
-
-/* Form Styles */
-.input-group .btn { border-top-left-radius: 0; border-bottom-left-radius: 0; }
-.orderby, .form-select { 
-    padding: 8px 12px; 
-    border: 1px solid #ddd; 
-    border-radius: 4px; 
-    background: white;
     width: 100%;
 }
 
-/* Responsive adjustments */
+.btn-close-toast {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.btn-close-toast:hover {
+    opacity: 1;
+}
+
+/* Product Tags */
+.product-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 6px 12px;
+    font-size: 11px;
+    color: #fff;
+    border-radius: 4px;
+    font-weight: bold;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.product-tag.hot {
+    background: #ff4757;
+}
+
+.product-tag.new {
+    background: var(--th-primary);
+    left: auto;
+    right: 10px;
+}
+
+.product-tag.sale {
+    background: #ffa502;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .active-filters { flex-direction: column; align-items: flex-start; }
-    .cart-toast { bottom: 20px; right: 20px; left: 20px; max-width: none; }
+    .sort-bar-inner {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .sort-form {
+        max-width: none;
+    }
+    
+    .active-filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .cart-toast {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        max-width: none;
+    }
+    
+    .input-group {
+        flex-direction: column;
+    }
+    
+    .input-group .form-control {
+        border-right: 2px solid #e9ecef;
+        border-bottom: none;
+        border-radius: 6px 6px 0 0;
+    }
+    
+    .input-group .th-btn {
+        border-radius: 0 0 6px 6px;
+        border-left: 2px solid var(--th-primary);
+        border-top: none;
+    }
+}
+
+@media (max-width: 576px) {
+    .th-sort-bar {
+        padding: 15px;
+    }
+    
+    .filter-badge {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
 }
 </style>
 {% endblock %}

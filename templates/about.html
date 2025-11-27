@@ -66,7 +66,7 @@ About Area
                         </div>
                     </div>
                     <div>
-                        <a href="about.html" class="th-btn">Discover More<i class="fas fa-chevrons-right ms-2"></i></a>
+                        <a href="{% url 'shop:shop_list' %}" class="th-btn">Shop Now<i class="fas fa-chevrons-right ms-2"></i></a>
                     </div>
                 </div>
             </div>
@@ -260,55 +260,104 @@ Feature Area
 </div>
 
 <!--==============================
-Testimonial Area  
+Share Your Experience Section
 ==============================-->
-<section class="overflow-hidden bg-smoke2" id="testi-sec">
-    <div class="shape-mockup testi-shape1" data-top="0" data-left="0"><img src="{% static 'assets/img/normal/testi_shape.png' %}" alt="shape"></div>
-    <div class="shape-mockup" data-bottom="0" data-right="0"><img src="{% static 'assets/img/shape/vector_shape_5.png' %}" alt="shape"></div>
+<section class="space bg-smoke2">
     <div class="container">
-        <div class="testi-card-area">
-            <div class="title-area">
-                <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">Testimonials</span>
-                <h2 class="sec-title">Our Customer Feedback</h2>
-            </div>
-            <div class="testi-card-slide">
-                <div class="swiper th-slider" id="testiSlide1" data-slider-options='{"effect":"slide"}'>
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="testi-card">
-                                <p class="testi-card_text">"Our organic farming practices work in harmony with nature. By avoiding synthetic chemicals, we help protect beneficial insects, birds, and other wildlife that are vital to a balanced ecosystem.
-                                    Organic foods often have a richer"</p>
-                                <div class="testi-card_profile">
-                                    <div class="testi-card_avater">
-                                        <img src="{% static 'assets/img/testimonial/testi_1_1.jpg' %}" alt="Avater">
-                                    </div>
-                                    <div class="testi-card_content">
-                                        <h3 class="testi-card_name">Angelina Margret</h3>
-                                        <span class="testi-card_desig">Customer of Our Shop</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="testi-card">
-                                <p class="testi-card_text">"Fresh Food farming practices work in harmony with nature. By avoiding synthetic chemicals, we help protect beneficial insects, birds, and other wildlife that are vital to a balanced ecosystem.
-                                    Organic foods help to be fit."</p>
-                                <div class="testi-card_profile">
-                                    <div class="testi-card_avater">
-                                        <img src="{% static 'assets/img/testimonial/testi_1_2.jpg' %}" alt="Avater">
-                                    </div>
-                                    <div class="testi-card_content">
-                                        <h3 class="testi-card_name">Alexan Micelito</h3>
-                                        <span class="testi-card_desig">Customer of Our Shop</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-40 mb-lg-0">
+                <div class="title-area text-center text-lg-start">
+                    <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">Share Your Story</span>
+                    <h2 class="sec-title">Share Your Experience</h2>
+                    <p class="sec-text mb-4">We love hearing from our valued customers! Share your experience with Wamugunda Farm's organic products and help others discover the goodness of fresh, natural produce.</p>
+                    <div class="checklist">
+                        <ul>
+                            <li>Your feedback helps us improve</li>
+                            <li>Inspire others with your story</li>
+                            <li>All testimonials are reviewed before publishing</li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="contact-form-wrap" data-bg-src="{% static 'assets/img/bg/contact_form_bg.png' %}">
+                    <h3 class="form-title">Leave Your Testimonial</h3>
+                    <form class="contact-form" id="testimonial-form" method="POST" action="{% url 'submit_testimonial' %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="client_name" id="client_name" placeholder="Your Name" required>
+                                    <i class="far fa-user"></i>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea class="form-control" name="testimonial_text" id="testimonial_text" placeholder="Share your experience with Wamugunda Farm..." rows="5" required></textarea>
+                                    <i class="far fa-comment"></i>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="th-btn">
+                                    Submit Testimonial <i class="fas fa-chevrons-right ms-2"></i>
+                                </button>
+                            </div>
+                            <div class="col-12">
+                                <p class="form-messages mb-0 mt-3"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--==============================
+Testimonial Area  
+==============================-->
+<section class="overflow-hidden space" id="testi-sec">
+    <div class="container">
+        <div class="title-area text-center">
+            <span class="sub-title"><img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="Icon">Testimonials</span>
+            <h2 class="sec-title">What Our Customers Say</h2>
+        </div>
+        <div class="testi-box-area" data-bg-src="{% static 'assets/img/bg/testi_bg_2.png' %}">
+            <div class="testi-box-img">
+                <img src="{% static 'assets/img/testimonial/testi_2_1.jpg' %}" alt="Image">
+            </div>
+            <div class="testi-box-shape">
+                <img src="{% static 'assets/img/bg/testi_box_shape.png' %}" alt="image">
+            </div>
+            <div class="testi-box-slide">
+                <div class="swiper th-slider" id="testiSlide2" data-slider-options='{"effect":"slide"}'>
+                    <div class="swiper-wrapper">
+                        {% for testimonial in testimonials %}
+                        <div class="swiper-slide">
+                            <div class="testi-box">
+                                <p class="testi-box_text">"{{ testimonial.testimonial_text }}"</p>
+                                <h3 class="testi-box_name">{{ testimonial.client_name }}</h3>
+                                <span class="testi-box_desig">Happy Customer</span>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <!-- Single empty state message when no testimonials exist -->
+                        <div class="swiper-slide">
+                            <div class="testi-box">
+                                <p class="testi-box_text">No testimonials yet. Be the first to share your experience with Wamugunda Farm!</p>
+                                <h3 class="testi-box_name">Share Your Story</h3>
+                                <span class="testi-box_desig">Be the first to review</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="testi-box_quote">
+                    <img src="{% static 'assets/img/testimonial/quote_1.png' %}" alt="Image">
+                </div>
                 <div class="icon-box">
-                    <button data-slider-prev="#testiSlide1" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
-                    <button data-slider-next="#testiSlide1" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
+                    <button data-slider-prev="#testiSlide2" class="slider-arrow default"><i class="far fa-arrow-left"></i></button>
+                    <button data-slider-next="#testiSlide2" class="slider-arrow default"><i class="far fa-arrow-right"></i></button>
                 </div>
             </div>
         </div>
@@ -397,4 +446,63 @@ Team Area
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const testimonialForm = document.getElementById('testimonial-form');
+    
+    if (testimonialForm) {
+        testimonialForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = 'Submitting... <i class="fas fa-spinner fa-spin ms-2"></i>';
+            submitBtn.disabled = true;
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    testimonialForm.reset();
+                    const messageDiv = testimonialForm.querySelector('.form-messages');
+                    messageDiv.innerHTML = '<div class="alert alert-success">Thank you for your testimonial! It has been submitted for review.</div>';
+                    
+                    // Scroll to message
+                    messageDiv.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    throw new Error(data.error || 'Submission failed');
+                }
+            })
+            .catch(error => {
+                const messageDiv = testimonialForm.querySelector('.form-messages');
+                messageDiv.innerHTML = '<div class="alert alert-danger">Sorry, there was an error submitting your testimonial. Please try again.</div>';
+            })
+            .finally(() => {
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                
+                // Clear message after 5 seconds
+                setTimeout(() => {
+                    const messageDiv = testimonialForm.querySelector('.form-messages');
+                    messageDiv.innerHTML = '';
+                }, 5000);
+            });
+        });
+    }
+});
+</script>
 {% endblock %}

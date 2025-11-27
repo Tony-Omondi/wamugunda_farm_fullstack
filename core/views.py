@@ -2,7 +2,9 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from shop.models import Product
-from .models import GalleryCategory, GalleryItem, Testimonial  # Add Testimonial
+from .models import GalleryCategory, GalleryItem, Testimonial
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -31,7 +33,11 @@ class HomeView(TemplateView):
         return context
 
 def about(request):
-    return render(request, 'about.html')
+    testimonials = Testimonial.objects.filter(is_active=True).order_by('-created_at')[:5]
+    context = {
+        'testimonials': testimonials,
+    }
+    return render(request, 'about.html', context)  # ✅ Fixed - added context parameter
 
 def contact(request):
     return render(request, 'contact.html')
@@ -55,3 +61,18 @@ def gallery(request):
     }
     
     return render(request, 'gallery.html', context)
+
+@require_POST
+def submit_testimonial(request):
+    client_name = request.POST.get('client_name')
+    testimonial_text = request.POST.get('testimonial_text')
+    
+    if client_name and testimonial_text:
+        testimonial = Testimonial.objects.create(
+            client_name=client_name,
+            testimonial_text=testimonial_text,
+            is_active=False  # Requires admin approval
+        )
+        return JsonResponse({'success': True})
+    
+    return JsonResponse({'error': 'Please fill all fields'}, status=400)

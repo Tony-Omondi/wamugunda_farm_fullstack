@@ -19,25 +19,100 @@
 
 <section class="space-top space-extra-bottom">
     <div class="container">
-        <!-- Sorting -->
-        <div class="th-sort-bar">
-            <div class="row justify-content-between align-items-center">
-                <div class="col-md">
-                    <p>Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} results</p>
-                </div>
-                <div class="col-md-auto">
-                    <form method="get">
-                        <select name="orderby" class="orderby" onchange="this.form.submit()">
-                            <option value="">Default Sorting</option>
-                            <option value="latest" {% if request.GET.orderby == 'latest' %}selected{% endif %}>Latest</option>
-                            <option value="price" {% if request.GET.orderby == 'price' %}selected{% endif %}>Price: Low to High</option>
-                            <option value="price-desc" {% if request.GET.orderby == 'price-desc' %}selected{% endif %}>Price: High to Low</option>
-                            <option value="rating" {% if request.GET.orderby == 'rating' %}selected{% endif %}>Rating</option>
+        <!-- Search and Filter Section -->
+        <div class="row mb-40">
+            <div class="col-lg-8">
+                <form method="get" class="row g-3 align-items-center">
+                    <!-- Search Input -->
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <input type="text" name="q" class="form-control" placeholder="Search products..." 
+                                   value="{{ request.GET.q }}">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-2"></i>Search
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Category Filter -->
+                    <div class="col-md-4">
+                        <select name="category" class="form-select" onchange="this.form.submit()">
+                            <option value="">All Categories</option>
+                            {% for category in categories %}
+                            <option value="{{ category.slug }}" 
+                                    {% if request.GET.category == category.slug %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                            {% endfor %}
                         </select>
-                    </form>
+                    </div>
+                    
+                    <!-- Clear Filters -->
+                    <div class="col-md-3">
+                        {% if request.GET.q or request.GET.category %}
+                        <a href="{% url 'shop' %}" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-times me-2"></i>Clear Filters
+                        </a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Sorting -->
+            <div class="col-lg-4">
+                <div class="th-sort-bar">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="mb-0">Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} results</p>
+                        <form method="get">
+                            <!-- Hidden fields to preserve search and category -->
+                            {% if request.GET.q %}
+                            <input type="hidden" name="q" value="{{ request.GET.q }}">
+                            {% endif %}
+                            {% if request.GET.category %}
+                            <input type="hidden" name="category" value="{{ request.GET.category }}">
+                            {% endif %}
+                            
+                            <select name="orderby" class="orderby" onchange="this.form.submit()">
+                                <option value="">Default Sorting</option>
+                                <option value="latest" {% if request.GET.orderby == 'latest' %}selected{% endif %}>Latest</option>
+                                <option value="price" {% if request.GET.orderby == 'price' %}selected{% endif %}>Price: Low to High</option>
+                                <option value="price-desc" {% if request.GET.orderby == 'price-desc' %}selected{% endif %}>Price: High to Low</option>
+                                <option value="rating" {% if request.GET.orderby == 'rating' %}selected{% endif %}>Rating</option>
+                            </select>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Active Filters -->
+        {% if request.GET.q or request.GET.category %}
+        <div class="row mb-30">
+            <div class="col-12">
+                <div class="active-filters">
+                    <strong>Active Filters:</strong>
+                    {% if request.GET.q %}
+                    <span class="filter-badge">
+                        Search: "{{ request.GET.q }}"
+                        <a href="?{% if request.GET.category %}category={{ request.GET.category }}{% endif %}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}" 
+                           class="remove-filter">×</a>
+                    </span>
+                    {% endif %}
+                    {% if request.GET.category %}
+                    {% for category in categories %}
+                        {% if category.slug == request.GET.category %}
+                        <span class="filter-badge">
+                            Category: {{ category.name }}
+                            <a href="?{% if request.GET.q %}q={{ request.GET.q }}{% endif %}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}" 
+                               class="remove-filter">×</a>
+                        </span>
+                        {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
         <!-- Products -->
         <div class="row gy-40">
@@ -73,7 +148,7 @@
                     </div>
 
                     <div class="product-content">
-                        <a href="#" class="product-category">{{ product.category.name }}</a>
+                        <a href="?category={{ product.category.slug }}" class="product-category">{{ product.category.name }}</a>
                         <h3 class="product-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
                         <span class="price">
                             {% if product.on_sale and product.old_price %}
@@ -93,8 +168,11 @@
             </div>
             {% empty %}
             <div class="col-12 text-center py-5">
-                <h3>No products yet</h3>
-                <p>Fresh from the farm — coming soon!</p>
+                <h3>No products found</h3>
+                <p>{% if request.GET.q or request.GET.category %}Try adjusting your search or filters{% else %}Fresh from the farm — coming soon!{% endif %}</p>
+                {% if request.GET.q or request.GET.category %}
+                <a href="{% url 'shop' %}" class="btn btn-primary mt-3">View All Products</a>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
@@ -104,15 +182,25 @@
         <div class="th-pagination text-center pt-50">
             <ul>
                 {% if page_obj.has_previous %}
-                <li><a href="?page={{ page_obj.previous_page_number }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}"><i class="far fa-arrow-left"></i></a></li>
+                <li>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}">
+                        <i class="far fa-arrow-left"></i>
+                    </a>
+                </li>
                 {% endif %}
                 {% for num in paginator.page_range %}
                 <li {% if page_obj.number == num %}class="active"{% endif %}>
-                    <a href="?page={{ num }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}">{{ num }}</a>
+                    <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}">
+                        {{ num }}
+                    </a>
                 </li>
                 {% endfor %}
                 {% if page_obj.has_next %}
-                <li><a href="?page={{ page_obj.next_page_number }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}"><i class="far fa-arrow-right"></i></a></li>
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}">
+                        <i class="far fa-arrow-right"></i>
+                    </a>
+                </li>
                 {% endif %}
             </ul>
         </div>
@@ -155,13 +243,37 @@
     max-width: 420px;
 }
 .cart-toast.show { opacity: 1; visibility: visible; transform: translateY(0); }
-.toast-body { display: flex; align corporal-items: center; width: 100%; }
+.toast-body { display: flex; align-items: center; width: 100%; }
 .btn-close-toast { background: none; border: none; font-size: 24px; cursor: pointer; opacity: 0.6; }
 .btn-close-toast:hover { opacity: 1; }
 .product-tag { position: absolute; top: 10px; left: 10px; padding: 4px 10px; font-size: 11px; color: #fff; border-radius: 4px; font-weight: bold; z-index: 2; }
 .product-tag.hot { background: #ff4757; }
 .product-tag.new { background: #2ed573; left: auto; right: 10px; }
 .product-tag.sale { background: #ffa502; }
+
+/* Filter Styles */
+.active-filters { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.filter-badge {
+    background: #e9ecef;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.remove-filter {
+    color: #6c757d;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+.remove-filter:hover { color: #dc3545; }
+
+/* Form Styles */
+.input-group .btn { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.orderby, .form-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; }
 </style>
 {% endblock %}
 

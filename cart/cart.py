@@ -9,6 +9,7 @@ class Cart:
         self.session = request.session
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
+            # create empty cart if doesn't exist
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
@@ -19,7 +20,7 @@ class Cart:
                 'id': product.id,
                 'name': product.name,
                 'price': str(product.price),
-                'quantity': 0
+                'quantity': 0,
             }
         self.cart[product_id]['quantity'] += quantity
         self.save()
@@ -27,10 +28,11 @@ class Cart:
     def update(self, product_id, quantity):
         product_id = str(product_id)
         if product_id in self.cart:
-            self.cart[product_id]['quantity'] = quantity
             if quantity <= 0:
                 self.remove(product_id)
-        self.save()
+            else:
+                self.cart[product_id]['quantity'] = quantity
+            self.save()
 
     def remove(self, product_id):
         product_id = str(product_id)
@@ -38,24 +40,35 @@ class Cart:
             del self.cart[product_id]
             self.save()
 
-    def remove_by_id(self, product_id):
-        self.remove(product_id)
-
     def save(self):
         self.session.modified = True
 
     def __iter__(self):
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
-        cart = self.cart.copy()
+        """Safe iterator — auto-removes deleted products, never crashes template"""
+        product_ids = list(self.cart.keys())
+        valid_ids = [pid for pid in product_ids if pid.isdigit()]
+        
+        if not valid_ids:
+            return  # empty cart
 
-        for product in products:
-            cart[str(product.id)]['product'] = product
+        products = Product.objects.filter(id__in=valid_ids)
+        products_dict = {str(p.id): p for p in products}
 
-        for item in cart.values():
+        for product_id in product_ids:
+            if product_id not in products_dict:
+                # Product was deleted → silently remove from cart
+                del self.cart[product_id]
+                continue
+
+            item = self.cart[product_id].copy()
+            item['product'] = products_dict[product_id]
             item['price'] = Decimal(item['price'])
             item['total_price'] = item['price'] * item['quantity']
+            item['product_id'] = int(product_id)  # safe for url tag
             yield item
+
+        # Save cleaned cart
+        self.save()
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
@@ -64,5 +77,6 @@ class Cart:
         return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 
     def clear(self):
-        del self.session[settings.CART_SESSION_ID]
-        self.save()
+        if settings.CART_SESSION_ID in self.session:
+            del self.session[settings.CART_SESSION_ID]
+        self.session.modified = True

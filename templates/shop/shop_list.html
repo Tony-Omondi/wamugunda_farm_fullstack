@@ -50,7 +50,7 @@
                     <!-- Clear Filters -->
                     <div class="col-md-3">
                         {% if request.GET.q or request.GET.category %}
-                        <a href="{% url 'shop' %}" class="btn btn-outline-secondary w-100">
+                        <a href="{% url 'shop:shop_list' %}" class="btn btn-outline-secondary w-100">
                             <i class="fas fa-times me-2"></i>Clear Filters
                         </a>
                         {% endif %}
@@ -171,7 +171,7 @@
                 <h3>No products found</h3>
                 <p>{% if request.GET.q or request.GET.category %}Try adjusting your search or filters{% else %}Fresh from the farm — coming soon!{% endif %}</p>
                 {% if request.GET.q or request.GET.category %}
-                <a href="{% url 'shop' %}" class="btn btn-primary mt-3">View All Products</a>
+                <a href="{% url 'shop:shop_list' %}" class="btn btn-primary mt-3">View All Products</a>
                 {% endif %}
             </div>
             {% endfor %}
@@ -273,7 +273,19 @@
 
 /* Form Styles */
 .input-group .btn { border-top-left-radius: 0; border-bottom-left-radius: 0; }
-.orderby, .form-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; }
+.orderby, .form-select { 
+    padding: 8px 12px; 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    background: white;
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .active-filters { flex-direction: column; align-items: flex-start; }
+    .cart-toast { bottom: 20px; right: 20px; left: 20px; max-width: none; }
+}
 </style>
 {% endblock %}
 

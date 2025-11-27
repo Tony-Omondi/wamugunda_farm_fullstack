@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<!-- Instagram Gallery Area -->
+<!-- Gallery Area -->
 <section class="space">
     <div class="container">
         <div class="title-area text-center mb-50">
@@ -33,342 +33,137 @@
         <div class="gallery-filter mb-50">
             <div class="filter-nav d-flex justify-content-center flex-wrap">
                 <button class="filter-btn active" data-filter="*">All Content</button>
-                <button class="filter-btn" data-filter=".harvest">Harvest</button>
-                <button class="filter-btn" data-filter=".farm-life">Farm Life</button>
-                <button class="filter-btn" data-filter=".customers">Customers</button>
-                <button class="filter-btn" data-filter=".sustainability">Sustainability</button>
+                {% for category in categories %}
+                <button class="filter-btn" data-filter=".category-{{ category.slug }}">{{ category.name }}</button>
+                {% endfor %}
             </div>
         </div>
 
-        <div class="row gy-40 gallery-grid">
-
-            <!-- 1. Pawpaw Harvest Reel -->
-            <div class="col-xl-4 col-md-6 gallery-item harvest">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DMkygYjoKN6/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
+        <div class="row gy-30 gallery-grid">
+            {% for item in gallery_items %}
+            <div class="col-xl-4 col-md-6 gallery-item category-{{ item.category.slug }}">
+                <div class="gallery-card style-hover">
+                    <div class="box-img">
+                        <!-- Instagram Embed Container -->
+                        <div class="instagram-embed-container" data-instagram-url="{{ item.instagram_url }}">
+                            <div class="embed-loading">
+                                <div class="loading-spinner"></div>
+                                <p>Loading Instagram content...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Content Type Badge -->
+                        <div class="content-type-badge {{ item.content_type }}">
+                            {% if item.content_type == 'reel' %}
+                                <i class="fab fa-instagram"></i> Reel
+                            {% elif item.content_type == 'story' %}
+                                <i class="fab fa-instagram"></i> Story
+                            {% else %}
+                                <i class="fab fa-instagram"></i> Post
+                            {% endif %}
+                        </div>
+                        
+                        <a href="{{ item.instagram_url }}" target="_blank" class="icon-btn style2">
+                            <i class="fab fa-instagram"></i>
+                        </a>
                     </div>
                     <div class="box-content">
-                        <p class="box-subtitle">Fresh Harvest</p>
-                        <h3 class="box-title">Sweet Pawpaw Season</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 245</span>
-                            <span><i class="far fa-comment"></i> 32</span>
+                        {% if item.subtitle %}<p class="box-subtitle">{{ item.subtitle }}</p>{% endif %}
+                        <h3 class="box-title">{{ item.title }}</h3>
+                        <div class="gallery-category">
+                            <span class="category-tag">{{ item.category.name }}</span>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- 2. Avocado Harvest -->
-            <div class="col-xl-4 col-md-6 gallery-item harvest">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DL4PDkxowT6/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Organic Avocados</p>
-                        <h3 class="box-title">Hass & Fuerte Ready</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 189</span>
-                            <span><i class="far fa-comment"></i> 24</span>
-                        </div>
-                    </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <div class="empty-state">
+                    <i class="far fa-images fa-3x mb-3"></i>
+                    <h3>No Gallery Items Yet</h3>
+                    <p>Check back soon for updates from our farm!</p>
+                    <a href="https://www.instagram.com/wamugundafarm/" target="_blank" class="th-btn style2 mt-3">
+                        Follow us on Instagram
+                    </a>
                 </div>
             </div>
-
-            <!-- 3. Farm Sunrise -->
-            <div class="col-xl-4 col-md-6 gallery-item farm-life">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DP53TMWCLPm/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Morning at the Farm</p>
-                        <h3 class="box-title">Golden Hour</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 312</span>
-                            <span><i class="far fa-comment"></i> 41</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. Macadamia Harvest -->
-            <div class="col-xl-4 col-md-6 gallery-item harvest">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DKmiW1wIxDL/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Tree to Table</p>
-                        <h3 class="box-title">Macadamia Nuts</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 156</span>
-                            <span><i class="far fa-comment"></i> 18</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. Customer Delivery -->
-            <div class="col-xl-4 col-md-6 gallery-item customers">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge post">Post</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/p/DKbfKVRo7vw/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Happy Customers</p>
-                        <h3 class="box-title">Fresh to Your Door</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 278</span>
-                            <span><i class="far fa-comment"></i> 29</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 6. Farm Life Reel -->
-            <div class="col-xl-4 col-md-6 gallery-item farm-life">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DKe6XtCIIF9/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Behind the Scenes</p>
-                        <h3 class="box-title">A Day at Wamugunda</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 201</span>
-                            <span><i class="far fa-comment"></i> 35</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7. Mango Season -->
-            <div class="col-xl-4 col-md-6 gallery-item harvest">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DLzOeDYovke/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Tropical Fruits</p>
-                        <h3 class="box-title">Ripe Mangoes</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 267</span>
-                            <span><i class="far fa-comment"></i> 31</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 8. Passion Fruit Harvest -->
-            <div class="col-xl-4 col-md-6 gallery-item harvest">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DK1VhnQIPOg/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Vine Fresh</p>
-                        <h3 class="box-title">Purple Passion Fruit</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 192</span>
-                            <span><i class="far fa-comment"></i> 22</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 9. Tree Planting Day -->
-            <div class="col-xl-4 col-md-6 gallery-item sustainability">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DJ8oUN0ItFD/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Sustainability</p>
-                        <h3 class="box-title">New Trees Planted</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 178</span>
-                            <span><i class="far fa-comment"></i> 19</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 10. Banana Harvest -->
-            <div class="col-xl-4 col-md-6 gallery-item harvest">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DH-Nn1yoyVV/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Farm Fresh</p>
-                        <h3 class="box-title">Sweet Bananas</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 234</span>
-                            <span><i class="far fa-comment"></i> 27</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 11. Customer Testimonial -->
-            <div class="col-xl-4 col-md-6 gallery-item customers">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DH0enemoqpF/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Customer Love</p>
-                        <h3 class="box-title">Thank You!</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 289</span>
-                            <span><i class="far fa-comment"></i> 38</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 12. Farm Team -->
-            <div class="col-xl-4 col-md-6 gallery-item farm-life">
-                <div class="gallery-card style-hover instagram-embed-card">
-                    <div class="box-img instagram-embed">
-                        <div class="content-type-badge reel">Reel</div>
-                        <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DH6T4NZIzAN/" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:100%;">
-                            <div style="padding:16px;"></div>
-                        </blockquote>
-                    </div>
-                    <div class="box-content">
-                        <p class="box-subtitle">Our Family</p>
-                        <h3 class="box-title">The Wamugunda Team</h3>
-                        <div class="interaction-stats">
-                            <span><i class="far fa-heart"></i> 301</span>
-                            <span><i class="far fa-comment"></i> 42</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Load More Button -->
-        <div class="text-center mt-60">
-            <button id="load-more" class="th-btn style2">
-                Load More <i class="fas fa-arrow-down ms-2"></i>
-            </button>
+            {% endfor %}
         </div>
 
         <!-- Follow on Instagram Button -->
-        <div class="text-center mt-40">
+        <div class="text-center mt-60">
             <a href="https://www.instagram.com/wamugundafarm/" target="_blank" class="th-btn style3">
-                Follow @wamugundafarm on Instagram <i class="fab fa-instagram ms-2"></i>
+                <i class="fab fa-instagram me-2"></i> Follow @wamugundafarm on Instagram
             </a>
         </div>
     </div>
 </section>
 
-<!-- Instagram Embed Script (Load once at bottom) -->
-<script async src="//www.instagram.com/embed.js"></script>
-
 <style>
-.instagram-embed-card .box-img {
+.gallery-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    position: relative;
+}
+
+.gallery-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.box-img {
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
-    background: #000;
-    min-height: 520px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.instagram-embed-card .instagram-media {
-    width: 100% !important;
-    max-width: none !important;
-}
-
-/* Hover overlay like original gallery */
-.gallery-card.style-hover .box-img::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.75));
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 0.4s;
-    pointer-events: none;
-}
-.gallery-card.style-hover:hover .box-img::before {
-    opacity: 1;
-}
-
-/* Category Filter Styles */
-.gallery-filter {
-    margin-bottom: 50px;
-}
-
-.filter-nav {
-    gap: 15px;
-}
-
-.filter-btn {
     background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 30px;
-    padding: 10px 24px;
-    font-weight: 500;
-    color: #6c757d;
-    transition: all 0.3s ease;
-    cursor: pointer;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.filter-btn:hover, .filter-btn.active {
-    background: #28a745;
-    color: white;
-    border-color: #28a745;
+.instagram-embed-container {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
 }
 
-/* Content Type Badge */
+.embed-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #7BB564;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .content-type-badge {
     position: absolute;
     top: 15px;
-    right: 15px;
-    background: rgba(0,0,0,0.7);
+    left: 15px;
+    background: rgba(123, 181, 100, 0.9);
     color: white;
     padding: 5px 12px;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 12px;
     font-weight: 600;
     z-index: 2;
     backdrop-filter: blur(5px);
@@ -378,28 +173,126 @@
     background: rgba(225, 48, 108, 0.9);
 }
 
+.content-type-badge.story {
+    background: rgba(155, 81, 224, 0.9);
+}
+
 .content-type-badge.post {
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.8);
 }
 
-/* Interaction Stats */
-.interaction-stats {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #6c757d;
-}
-
-.interaction-stats span {
+.icon-btn.style2 {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #7BB564;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    z-index: 2;
+    backdrop-filter: blur(5px);
 }
 
-/* Animation for new items */
+.icon-btn.style2:hover {
+    background: #7BB564;
+    color: white;
+    transform: scale(1.1);
+}
+
+.box-content {
+    padding: 25px;
+    background: #fff;
+}
+
+.box-subtitle {
+    color: #7BB564;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.box-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    line-height: 1.3;
+    color: #2c3e50;
+}
+
+.box-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.box-title a:hover {
+    color: #7BB564;
+}
+
+.gallery-category {
+    margin-top: 10px;
+}
+
+.category-tag {
+    background: #f8f9fa;
+    color: #495057;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid #e9ecef;
+}
+
+.filter-nav {
+    gap: 10px;
+}
+
+.filter-btn {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-weight: 600;
+    color: #495057;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s;
+}
+
+.filter-btn:hover::after {
+    left: 100%;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: #7BB564;
+    border-color: #7BB564;
+    color: white;
+}
+
 .gallery-item {
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.5s ease;
 }
 
 .gallery-item.hidden {
@@ -407,23 +300,58 @@
 }
 
 .gallery-item.fade-in {
-    animation: fadeIn 0.5s ease forwards;
+    animation: fadeInUp 0.6s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* Responsive adjustments */
+.empty-state {
+    padding: 60px 20px;
+    color: #666;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.empty-state i {
+    color: #ddd;
+}
+
+/* Instagram embed responsive adjustments */
+.instagram-media {
+    min-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .filter-nav {
-        gap: 10px;
+    .box-img {
+        min-height: 300px;
     }
     
     .filter-btn {
-        padding: 8px 16px;
-        font-size: 0.9rem;
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .box-content {
+        padding: 20px;
+    }
+    
+    .box-title {
+        font-size: 18px;
+    }
+    
+    .gallery-card:hover {
+        transform: translateY(-5px);
     }
 }
 </style>
@@ -457,55 +385,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Load more functionality
-    const loadMoreBtn = document.getElementById('load-more');
-    let currentItems = 6;
-    
-    if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function() {
-            const allItems = Array.from(document.querySelectorAll('.gallery-item'));
-            
-            for (let i = currentItems; i < currentItems + 3 && i < allItems.length; i++) {
-                if (allItems[i].style.display !== 'none') {
-                    allItems[i].classList.add('fade-in');
-                }
-            }
-            
-            currentItems += 3;
-            
-            // Hide button if all items are visible
-            if (currentItems >= allItems.length) {
-                loadMoreBtn.style.display = 'none';
-            }
-        });
+    // Load Instagram embeds
+    function loadInstagramEmbeds() {
+        const embedContainers = document.querySelectorAll('.instagram-embed-container');
         
-        // Initially hide items beyond the first 6
-        galleryItems.forEach((item, index) => {
-            if (index >= 6) {
-                item.classList.add('hidden');
-            }
+        embedContainers.forEach(container => {
+            const instagramUrl = container.getAttribute('data-instagram-url');
+            
+            // Create iframe as fallback
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.instagram.com/p/${extractInstagramId(instagramUrl)}/embed/captioned/`;
+            iframe.width = '100%';
+            iframe.height = '400';
+            iframe.style.border = 'none';
+            iframe.style.borderRadius = '8px';
+            iframe.onload = function() {
+                container.querySelector('.embed-loading').style.display = 'none';
+            };
+            
+            // Add iframe to container
+            container.appendChild(iframe);
         });
     }
     
-    // Lazy load Instagram embeds when they come into view
-    if ('IntersectionObserver' in window) {
-        const lazyInstagramObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const embed = entry.target;
-                    if (window.instgrm) {
-                        window.instgrm.Embeds.process();
-                    }
-                    lazyInstagramObserver.unobserve(embed);
-                }
-            });
-        });
-        
-        document.querySelectorAll('.instagram-media').forEach(embed => {
-            lazyInstagramObserver.observe(embed);
-        });
+    function extractInstagramId(url) {
+        // Extract post ID from Instagram URL
+        const matches = url.match(/\/(p|reel|stories)\/([^\/]+)/);
+        return matches ? matches[2] : null;
+    }
+    
+    // Load embeds after page load
+    setTimeout(loadInstagramEmbeds, 1000);
+    
+    // Initialize Instagram embed script
+    if (typeof instgrm !== 'undefined') {
+        instgrm.Embeds.process();
     }
 });
+
+// Instagram embed script
+(function() {
+    var instagramScript = document.createElement('script');
+    instagramScript.src = '//www.instagram.com/embed.js';
+    instagramScript.async = true;
+    document.head.appendChild(instagramScript);
+})();
 </script>
 
 {% endblock %}

@@ -52,6 +52,7 @@
                                     <li><a href="{% url 'home' %}">Home</a></li>
                                     <li><a href="{% url 'about' %}">About Us</a></li>
                                     <li><a href="{% url 'shop:shop_list' %}">Shop</a></li>
+                                    <li><a href="{% url 'gallery' %}">Gallery</a></li>
                                     <li><a href="{% url 'contact' %}">Contact</a></li>
                                 </ul>
                             </nav>
@@ -90,7 +91,7 @@
         <button class="th-menu-toggle"><i class="fal fa-times"></i></button>
         <div class="mobile-logo">
             <a href="{% url 'home' %}">
-                <img src="{% static 'assets/img/logo.png' %}" 
+                <img src="{% static 'assets/img/logo.png' %}" alt="Wamugunda Farm">  <!-- or correct path -->
                      alt="Wamugunda"
                      width="155" height="69"
                      style="width:155px; height:69px; object-fit:contain;">
@@ -101,6 +102,7 @@
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'about' %}">About Us</a></li>
                 <li><a href="{% url 'shop:shop_list' %}">Shop</a></li>
+                <li><a href="{% url 'gallery' %}">Gallery</a></li>
                 <li><a href="{% url 'cart:cart_detail' %}">Cart {% if cart %}({{ cart|length }}){% endif %}</a></li>
                 <li><a href="{% url 'contact' %}">Contact</a></li>
             </ul>

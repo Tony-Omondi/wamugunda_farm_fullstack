@@ -4,10 +4,7 @@
 {% block title %}Shop - Wamugunda Farm{% endblock %}
 
 {% block content %}
-
-<!--==============================
-    Breadcumb
-============================== -->
+<!-- Breadcumb -->
 <div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/bg/breadcumb-bg.jpg' %}">
     <div class="container">
         <div class="breadcumb-content">
@@ -20,68 +17,64 @@
     </div>
 </div>
 
-<!--==============================
-Product Area
-==============================-->
 <section class="space-top space-extra-bottom">
     <div class="container">
-
-        <!-- Sorting Bar -->
+        <!-- Sorting -->
         <div class="th-sort-bar">
             <div class="row justify-content-between align-items-center">
                 <div class="col-md">
-                    <p class="woocommerce-result-count">
-                        Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} results
-                    </p>
+                    <p>Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} results</p>
                 </div>
                 <div class="col-md-auto">
-                    <form class="woocommerce-ordering" method="get">
+                    <form method="get">
                         <select name="orderby" class="orderby" onchange="this.form.submit()">
                             <option value="">Default Sorting</option>
-                            <option value="latest" {% if request.GET.orderby == 'latest' %}selected{% endif %}>Sort by latest</option>
-                            <option value="price" {% if request.GET.orderby == 'price' %}selected{% endif %}>Sort by price: low to high</option>
-                            <option value="price-desc" {% if request.GET.orderby == 'price-desc' %}selected{% endif %}>Sort by price: high to low</option>
-                            <option value="rating" {% if request.GET.orderby == 'rating' %}selected{% endif %}>Sort by rating</option>
+                            <option value="latest" {% if request.GET.orderby == 'latest' %}selected{% endif %}>Latest</option>
+                            <option value="price" {% if request.GET.orderby == 'price' %}selected{% endif %}>Price: Low to High</option>
+                            <option value="price-desc" {% if request.GET.orderby == 'price-desc' %}selected{% endif %}>Price: High to Low</option>
+                            <option value="rating" {% if request.GET.orderby == 'rating' %}selected{% endif %}>Rating</option>
                         </select>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- Products Grid -->
+        <!-- Products -->
         <div class="row gy-40">
             {% for product in products %}
             <div class="col-xl-3 col-lg-4 col-sm-6">
                 <div class="th-product product-grid">
-
                     <div class="product-img">
                         {% with main_img=product.images.first %}
                         <a href="{{ product.get_absolute_url }}">
-                            <img src="{% if main_img %}{{ main_img.image.url }}{% else %}{% static 'assets/img/product/no-image.png' %}{% endif %}" alt="{{ product.name }}">
+                            <img src="{% if main_img %}{{ main_img.image.url }}{% else %}{% static 'assets/img/product/no-image.png' %}{% endif %}"
+                                 alt="{{ product.name }}">
                         </a>
                         {% endwith %}
 
-                        <!-- Tags -->
-                        {% if product.is_hot %}<span class="product-tag">Hot</span>{% endif %}
-                        {% if product.is_new %}<span class="product-tag">New</span>{% endif %}
-                        {% if product.on_sale %}<span class="product-tag">Sale</span>{% endif %}
+                        {% if product.is_hot %}<span class="product-tag hot">Hot</span>{% endif %}
+                        {% if product.is_new %}<span class="product-tag new">New</span>{% endif %}
+                        {% if product.on_sale %}<span class="product-tag sale">Sale</span>{% endif %}
 
-                        <!-- Hover Actions -->
                         <div class="actions">
-                            <a href="{{ product.get_absolute_url }}" class="icon-btn popup-content"><i class="far fa-eye"></i></a>
-                            <form action="{% url 'cart:cart_add' product.id %}" method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="icon-btn"><i class="far fa-cart-plus"></i></button>
-                            </form>
-                            <a href="#" class="icon-btn add-to-wishlist" data-id="{{ product.id }}"><i class="far fa-heart"></i></a>
+                            <a href="{{ product.get_absolute_url }}" class="icon-btn"><i class="far fa-eye"></i></a>
+
+                            <!-- AJAX Add to Cart -->
+                            <button type="button" class="icon-btn add-to-cart-btn"
+                                    data-url="{% url 'cart:cart_add' product.id %}"
+                                    data-name="{{ product.name|truncatewords:6 }}">
+                                <i class="far fa-cart-plus"></i>
+                            </button>
+
+                            <a href="#" class="icon-btn add-to-wishlist" data-id="{{ product.id }}">
+                                <i class="far fa-heart"></i>
+                            </a>
                         </div>
                     </div>
 
                     <div class="product-content">
                         <a href="#" class="product-category">{{ product.category.name }}</a>
                         <h3 class="product-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
-
-                        <!-- Price -->
                         <span class="price">
                             {% if product.on_sale and product.old_price %}
                                 KSh {{ product.price }} <del>KSh {{ product.old_price }}</del>
@@ -89,15 +82,11 @@ Product Area
                                 KSh {{ product.price }}
                             {% endif %}
                         </span>
-
-                        <!-- Star Rating (100% working - no errors) -->
                         <div class="woocommerce-product-rating">
                             <div class="star-rating">
-                                <span style="width: {% widthratio product.average_rating 5 100 %}%">
-                                    Rated {{ product.average_rating|floatformat:1 }} out of 5
-                                </span>
+                                <span style="width:{% widthratio product.average_rating 5 100 %}%"></span>
                             </div>
-                            <span class="count">({{ product.review_count }} Reviews)</span>
+                            <span class="count">({{ product.review_count }})</span>
                         </div>
                     </div>
                 </div>
@@ -105,7 +94,7 @@ Product Area
             {% empty %}
             <div class="col-12 text-center py-5">
                 <h3>No products yet</h3>
-                <p class="text-muted">Fresh from the farm — coming soon!</p>
+                <p>Fresh from the farm — coming soon!</p>
             </div>
             {% endfor %}
         </div>
@@ -115,32 +104,133 @@ Product Area
         <div class="th-pagination text-center pt-50">
             <ul>
                 {% if page_obj.has_previous %}
-                    <li><a href="?page={{ page_obj.previous_page_number }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}"><i class="far fa-arrow-left"></i></a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}"><i class="far fa-arrow-left"></i></a></li>
                 {% endif %}
-
                 {% for num in paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <li class="active"><a href="#">{{ num }}</a></li>
-                    {% else %}
-                        <li><a href="?page={{ num }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}">{{ num }}</a></li>
-                    {% endif %}
+                <li {% if page_obj.number == num %}class="active"{% endif %}>
+                    <a href="?page={{ num }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}">{{ num }}</a>
+                </li>
                 {% endfor %}
-
                 {% if page_obj.has_next %}
-                    <li><a href="?page={{ page_obj.next_page_number }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}"><i class="far fa-arrow-right"></i></a></li>
+                <li><a href="?page={{ page_obj.next_page_number }}{% if request.GET.orderby %}&orderby={{ request.GET.orderby }}{% endif %}"><i class="far fa-arrow-right"></i></a></li>
                 {% endif %}
             </ul>
         </div>
         {% endif %}
-
     </div>
 </section>
 
+<!-- Toast Notification -->
+<div id="cartToast" class="cart-toast">
+    <div class="toast-body">
+        <i class="fas fa-check-circle text-success me-3"></i>
+        <div>
+            <strong>Added to Cart!</strong><br>
+            <span id="toastProductName"></span>
+        </div>
+        <a href="{% url 'cart:cart_detail' %}" class="btn btn-sm btn-primary ms-4">View Cart</a>
+        <button type="button" class="btn-close-toast ms-3">&times;</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.cart-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    z-index: 9999;
+    border-left: 5px solid #28a745;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100px);
+    transition: all 0.4s ease;
+    max-width: 420px;
+}
+.cart-toast.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.toast-body { display: flex; align corporal-items: center; width: 100%; }
+.btn-close-toast { background: none; border: none; font-size: 24px; cursor: pointer; opacity: 0.6; }
+.btn-close-toast:hover { opacity: 1; }
+.product-tag { position: absolute; top: 10px; left: 10px; padding: 4px 10px; font-size: 11px; color: #fff; border-radius: 4px; font-weight: bold; z-index: 2; }
+.product-tag.hot { background: #ff4757; }
+.product-tag.new { background: #2ed573; left: auto; right: 10px; }
+.product-tag.sale { background: #ffa502; }
+</style>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-    // Simple wishlist (saved in browser)
+// CSRF Token Helper
+function getCsrfToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+           document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
+}
+
+// Add to Cart AJAX
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const url = this.dataset.url;
+            const name = this.dataset.name;
+            const icon = this.querySelector('i');
+
+            // Loading
+            icon.classList.replace('fa-cart-plus', 'fa-spinner');
+            icon.classList.add('fa-spin');
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': getCsrfToken(),
+                },
+                credentials: 'same-origin'
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('toastProductName').textContent = name;
+                    document.getElementById('cartToast').classList.add('show');
+
+                    // Update cart count in navbar (if exists)
+                    document.querySelectorAll('.cart-count').forEach(el => {
+                        el.textContent = data.cart_total;
+                    });
+
+                    // Success check
+                    icon.classList.remove('fa-spin', 'fa-spinner');
+                    icon.classList.replace('fa-cart-plus', 'fa-check');
+                    setTimeout(() => icon.className = 'far fa-cart-plus', 2000);
+                }
+            })
+            .catch(() => {
+                alert('Error adding to cart. Please try again.');
+                icon.className = 'far fa-cart-plus';
+            });
+        });
+    });
+
+    // Close toast
+    document.querySelector('.btn-close-toast')?.addEventListener('click', () => {
+        document.getElementById('cartToast').classList.remove('show');
+    });
+
+    // Auto hide after 5s
+    const toast = document.getElementById('cartToast');
+    toast.addEventListener('transitionend', () => {
+        if (toast.classList.contains('show')) {
+            setTimeout(() => toast.classList.remove('show'), 5000);
+        }
+    });
+
+    // Wishlist (local)
     document.querySelectorAll('.add-to-wishlist').forEach(btn => {
         btn.addEventListener('click', e => {
             e.preventDefault();
@@ -154,5 +244,6 @@ Product Area
             }
         });
     });
+});
 </script>
 {% endblock %}

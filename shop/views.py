@@ -79,3 +79,77 @@ class ProductDetailView(DetailView):
             category=product.category, available=True
         ).exclude(id=product.id)[:8]
         return context
+    
+
+
+# shop/views.py  ← add these classes/functions at the bottom
+
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+import io
+from .models import Recipe, RecipeIngredient
+
+
+class RecipeListView(ListView):
+    model = Recipe
+    template_name = 'shop/recipe_list.html'
+    context_object_name = 'recipes'
+    paginate_by = 12
+
+    def get_queryset(self):
+        return Recipe.objects.filter(is_active=True)
+
+
+class RecipeDetailView(DetailView):
+    model = Recipe
+    template_name = 'shop/recipe_detail.html'
+    slug_url_kwarg = 'slug'
+    context_object_name = 'recipe'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        recipe = self.object
+
+        context['main_image'] = recipe.image
+        context['gallery_images'] = []  # can extend later
+        context['ingredient_list'] = RecipeIngredient.objects.filter(recipe=recipe).select_related('product')
+        context['featured_products'] = recipe.featured_products.filter(available=True)
+
+        # Fake data so product_detail.html doesn't break
+        context['average_rating'] = 5.0
+        context['reviews'] = []
+        context['related_products'] = recipe.featured_products.all()[:8]
+
+        return context
+
+
+# shop/views.py  ← Replace the old recipe_pdf_download function with this one
+
+
+
+def recipe_pdf_download(request, slug):
+    recipe = get_object_or_404(Recipe, slug=slug, is_active=True)
+
+    # Get ingredients with product data
+    ingredients = RecipeIngredient.objects.filter(recipe=recipe).select_related('product')
+
+    template = get_template('shop/recipe_pdf.html')
+    html = template.render({
+        'recipe': recipe,
+        'ingredients': ingredients,
+        'request': request,
+    })
+
+    # Create a PDF in memory
+    result = io.BytesIO()
+    pdf = pisa.pisaDocument(io.BytesIO(html.encode("UTF-8")), result)
+
+    if not pdf.err:
+        response = HttpResponse(result.getvalue(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{recipe.slug}-recipe.pdf"'
+        return response
+    else:
+        return HttpResponse("Error generating PDF", status=400)

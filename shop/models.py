@@ -90,3 +90,57 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.product.name} - {self.rating} stars"
+    
+
+# shop/models.py  ← add this at the very end of the file
+
+def recipe_image_path(instance, filename):
+    return f'recipes/{instance.slug}/{filename}'
+
+class Recipe(models.Model):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True)
+    image = models.ImageField(upload_to=recipe_image_path, help_text="Main recipe photo")
+    description = models.TextField(blank=True)
+    instructions = models.TextField(help_text="Step-by-step instructions")
+
+    prep_time = models.PositiveIntegerField(default=15, help_text="In minutes")
+    cook_time = models.PositiveIntegerField(default=30, help_text="In minutes")
+    servings = models.PositiveIntegerField(default=4)
+
+    difficulty = models.CharField(
+        max_length=20,
+        choices=[('easy', 'Easy'), ('medium', 'Medium'), ('hard', 'Hard')],
+        default='medium'
+    )
+
+    # Connect to shop products
+    featured_products = models.ManyToManyField('Product', related_name='featured_in_recipes', blank=True)
+    ingredients = models.ManyToManyField('Product', through='RecipeIngredient', related_name='used_in_recipes', blank=True)
+
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created_at',)
+        verbose_name_plural = "Recipes"
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('shop:recipe_detail', args=[self.slug])
+
+
+class RecipeIngredient(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    quantity = models.CharField(max_length=100, blank=True, help_text="e.g. 500g, 2 cups, 1 bunch")
+    notes = models.CharField(max_length=200, blank=True)
+
+    class Meta:
+        unique_together = ('recipe', 'product')
+        verbose_name = "Recipe Ingredient"
+
+    def __str__(self):
+        return f"{self.quantity} {self.product.name} → {self.recipe.title}"

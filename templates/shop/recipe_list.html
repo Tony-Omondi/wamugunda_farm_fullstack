@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Farm Recipes - Wamugunda Farm{% endblock %}
+
+{% block content %}
+<div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/bg/breadcumb-bg.jpg' %}">
+    <div class="container">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">Farm Recipes</h1>
+            <ul class="breadcumb-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li>Recipes</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<section class="space">
+    <div class="container">
+        <div class="title-area text-center mb-50">
+            <span class="sub-title">
+                <img src="{% static 'assets/img/theme-img/title_icon.svg' %}" alt="icon"> Fresh From Our Farm
+            </span>
+            <h2 class="sec-title">Delicious Recipes Using Wamugunda Produce</h2>
+        </div>
+
+        <div class="row gy-30 gallery-grid">
+            {% for recipe in recipes %}
+            <div class="col-xl-4 col-md-6 gallery-item">
+                <div class="gallery-card style-hover">
+                    <div class="box-img">
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"
+                             style="width:100%; height:400px; object-fit:cover;">
+                        <a href="{{ recipe.get_absolute_url }}" class="icon-btn style2">
+                            View Recipe
+                        </a>
+                    </div>
+                    <div class="box-content">
+                        <p class="box-subtitle">
+                            {{ recipe.get_difficulty_display }} • {{ recipe.prep_time }}+{{ recipe.cook_time }} mins • {{ recipe.servings }} servings
+                        </p>
+                        <h3 class="box-title">
+                            <a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <h3>No recipes yet. Coming soon!</h3>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Paste your full gallery CSS here (same as before) -->
+<style>
+    /* ← ALL your gallery styles from earlier → */
+    .gallery-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 5px 20px rgba(0,0,0,0.08); transition:all .3s; }
+    .gallery-card:hover { transform:translateY(-8px); box-shadow:0 15px 40px rgba(0,0,0,0.15); }
+    /* ... rest of your styles ... */
+</style>
+{% endblock %}

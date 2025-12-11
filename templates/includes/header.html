@@ -33,7 +33,7 @@
                 <div class="menu-area">
                     <div class="logo-bg"></div>
                     <div class="row align-items-center justify-content-between">
-                        <!-- Desktop Logo - PNG 155×69 -->
+                        <!-- Logo -->
                         <div class="col-auto">
                             <div class="header-logo">
                                 <a href="{% url 'home' %}">
@@ -45,13 +45,14 @@
                             </div>
                         </div>
 
-                        <!-- Desktop Menu -->
+                        <!-- Desktop Menu - RECIPES ADDED -->
                         <div class="col-auto">
                             <nav class="main-menu d-none d-lg-inline-block">
                                 <ul>
                                     <li><a href="{% url 'home' %}">Home</a></li>
                                     <li><a href="{% url 'about' %}">About Us</a></li>
                                     <li><a href="{% url 'shop:shop_list' %}">Shop</a></li>
+                                    <li><a href="{% url 'shop:recipe_list' %}">Recipes</a></li>
                                     <li><a href="{% url 'gallery' %}">Gallery</a></li>
                                     <li><a href="{% url 'contact' %}">Contact</a></li>
                                 </ul>
@@ -61,7 +62,7 @@
                             </button>
                         </div>
 
-                        <!-- Cart + WhatsApp Button (Real Number) -->
+                        <!-- Cart + WhatsApp -->
                         <div class="col-auto d-none d-xl-block ms-auto">
                             <div class="header-button">
                                 <a href="{% url 'cart:cart_detail' %}" class="simple-icon position-relative">
@@ -72,10 +73,6 @@
                                         </span>
                                     {% endif %}
                                 </a>
-                                {% comment %} <a href="https://wa.me/254726857007?text=Hello%20Wamugunda%20Farm!%20I'd%20like%20to%20place%20an%20order."
-                                   class="th-btn style4 ms-3" target="_blank">
-                                    <i class="fab fa-whatsapp"></i> Order on WhatsApp
-                                </a> {% endcomment %}
                             </div>
                         </div>
                     </div>
@@ -85,19 +82,21 @@
     </div>
 </header>
 
-<!-- Mobile Menu -->
+<!-- Mobile Menu - RECIPES ADDED -->
 <div class="th-menu-wrapper">
     <div class="th-menu-area text-center">
         <button class="th-menu-toggle"><i class="fal fa-times"></i></button>
         <div class="mobile-logo">
             <a href="{% url 'home' %}">
-                <img src="{% static 'assets/img/logo2.png' %}" alt="Wamugunda Farm">  <!-- or correct path --></a>
+                <img src="{% static 'assets/img/logo2.png' %}" alt="Wamugunda Farm">
+            </a>
         </div>
         <div class="th-mobile-menu">
             <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'about' %}">About Us</a></li>
                 <li><a href="{% url 'shop:shop_list' %}">Shop</a></li>
+                <li><a href="{% url 'shop:recipe_list' %}">Recipes</a></li>
                 <li><a href="{% url 'gallery' %}">Gallery</a></li>
                 <li><a href="{% url 'cart:cart_detail' %}">Cart {% if cart %}({{ cart|length }}){% endif %}</a></li>
                 <li><a href="{% url 'contact' %}">Contact</a></li>
@@ -106,7 +105,7 @@
     </div>
 </div>
 
-<!-- Mini Cart Sidebar -->
+<!-- Mini Cart Sidebar (unchanged) -->
 <div class="sidemenu-wrapper sidemenu-cart">
     <div class="sidemenu-content">
         <button class="closeButton sideMenuCls"><i class="far fa-times"></i></button>

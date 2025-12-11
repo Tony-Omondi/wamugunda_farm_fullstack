@@ -1,0 +1,45 @@
+{# templates/shop/partials/product_card.html #}
+{% load static %}
+<div class="th-product product-grid">
+    <div class="product-img position-relative overflow-hidden rounded">
+     <a href="{{ product.get_absolute_url }}">
+         {% if product.images.first %}
+             <img src="{{ product.images.first.image.url }}"
+                  alt="{{ product.name }}"
+                  class="img-fluid w-100"
+                  style="height: 280px; object-fit: cover;">
+         {% else %}
+             <img src="{% static 'assets/img/product/no-image.png' %}"
+                  alt="{{ product.name }}"
+                  class="img-fluid w-100"
+                  style="height: 280px; object-fit: cover;">
+         {% endif %}
+     </a>
+
+     <!-- Badges
+     {% if product.is_new %}<span class="product-tag bg-success">New</span>{% endif %}
+     {% if product.is_hot %}<span class="product-tag bg-danger">Hot</span>{% endif %}
+     {% if product.on_sale %}<span class="product-tag bg-warning text-dark">Sale</span>{% endif %}
+
+     <div class="actions">
+         <a href="{{ product.get_absolute_url }}" class="icon-btn"><i class="far fa-eye"></i></a>
+         <a href="https://wa.me/254726857007?text=Hi!%20I%20want%20to%20buy:%20{{ product.name|urlencode }}"
+            target="_blank" class="icon-btn"><i class="fab fa-whatsapp"></i></a>
+     </div>
+ </div>
+
+ <div class="product-content text-center pt-3">
+     <a href="{{ product.category.get_absolute_url }}" class="product-category small text-muted">
+         {{ product.category.name }}
+     </a>
+     <h3 class="product-title mt-1">
+         <a href="{{ product.get_absolute_url }}" class="text-dark">{{ product.name }}</a>
+     </h3>
+     <div class="price h5 text-success mb-0">
+         KSh {{ product.price }}
+         {% if product.old_price %}
+             <del class="text-muted small ms-2">KSh {{ product.old_price }}</del>
+         {% endif %}
+     </div>
+ </div>
+</div>

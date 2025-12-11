@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ recipe.title }} - Recipe{% endblock %}
+
+{% block content %}
+<div class="breadcumb-wrapper" data-bg-src="{% static 'assets/img/bg/breadcumb-bg.jpg' %}">
+    <div class="container">
+        <div class="breadcumb-content">
+            <h1 class="breadcumb-title">{{ recipe.title }}</h1>
+            <ul class="breadcumb-menu">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'shop:recipe_list' %}">Recipes</a></li>
+                <li>{{ recipe.title }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<section class="product-details space-top space-extra-bottom">
+    <div class="container">
+        <div class="row gx-60">
+            <!-- Recipe Image -->
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="product-big-img rounded shadow overflow-hidden">
+                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-fluid w-100" style="height: 500px; object-fit: cover;">
+                </div>
+            </div>
+
+            <!-- Recipe Info -->
+            <div class="col-lg-6">
+                <h2 class="product-title mb-4">{{ recipe.title }}</h2>
+
+                <!-- Badges: Difficulty + Total Time + Servings (FIXED!) -->
+                <div class="d-flex flex-wrap gap-3 mb-4 align-items-center">
+                    <span class="badge bg-success fs-5">
+                        {{ recipe.get_difficulty_display }}
+                    </span>
+
+                    <span class="badge bg-light text-dark fs-5">
+                        <i class="far fa-clock me-2"></i>
+                        {{ recipe.prep_time|add:recipe.cook_time }} mins
+                    </span>
+
+                    <span class="badge bg-light text-dark fs-5">
+                        <i class="far fa-users me-2"></i>
+                        {{ recipe.servings }} 
+                        {% if recipe.servings == 1 %}serving{% else %}servings{% endif %}
+                    </span>
+                </div>
+
+                <!-- Description -->
+                {% if recipe.description %}
+                <div class="mb-5">
+                    {{ recipe.description|linebreaks }}
+                </div>
+                {% endif %}
+
+                <!-- Ingredients List -->
+                <h4 class="mt-5 mb-3">Ingredients</h4>
+                <ul class="list-group mb-5">
+                    {% for ing in ingredient_list %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center py-3 border-0 bg-light rounded mb-2">
+                        <div>
+                            <strong class="text-success">{{ ing.quantity|default:"–" }}</strong>
+                            <span class="ms-2">{{ ing.product.name }}</span>
+                            {% if ing.notes %}
+                                <small class="text-muted d-block">{{ ing.notes }}</small>
+                            {% endif %}
+                        </div>
+                        <a href="{{ ing.product.get_absolute_url }}" class="btn btn-sm btn-outline-success">
+                            Buy Now
+                        </a>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted text-center py-4">
+                        No ingredients linked yet.
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Action Buttons -->
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{% url 'shop:recipe_pdf' recipe.slug %}" class="th-btn btn-lg">
+                        <i class="far fa-file-pdf me-2"></i> Download Recipe PDF
+                    </a>
+                    <a href="https://wa.me/254726857007?text=Hi!%20I'd%20love%20to%20make:%20{{ recipe.title|urlencode }}%20Can%20you%20send%20me%20the%20ingredients?"
+                       target="_blank" class="th-btn btn-success btn-lg">
+                        <i class="fab fa-whatsapp me-2"></i> Order via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="p-5 bg-light rounded shadow-sm">
+                    <h3 class="mb-4 text-success">Step-by-Step Instructions</h3>
+                    <div class="instructions" style="white-space: pre-line; font-size: 1.1rem/1.8 'Georgia', serif; color: #333;">
+                        {{ recipe.instructions }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Products -->
+        {% if featured_products %}
+        <div class="mt-5">
+            <h3 class="text-center mb-4">Featured Products in This Recipe</h3>
+            <div class="row g-4 justify-content-center">
+                {% for p in featured_products %}
+                <div class="col-md-6 col-lg-4 col-xl-3">
+                    {% include "shop/partials/product_card.html" with product=p %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -8,53 +8,103 @@
     <meta name="description" content="Wamugunda Farm - 100% Organic Fruits, Vegetables & Dairy from Kenya">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/favicons/apple-icon-180x180.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/img/favicons/favicon-32x32.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/favicons/wamugunda.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/img/favicons/wamugunda.png' %}">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300..700&family=DM+Sans:wght@400;500;700&family=Lobster&display=swap" rel="stylesheet">
 
-    <!-- CSS Files -->
     <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/swiper-bundle.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 
+    <style>
+        /* Floating Social Sidebar Styles */
+        .social-sidebar {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            z-index: 9999;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff !important;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            margin-bottom: 2px;
+            border-radius: 20px 0 0 20px; /* Rounded left side */
+            box-shadow: -2px 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .social-link:hover {
+            width: 50px;
+            padding-right: 5px;
+        }
+
+        /* Specific Brand Colors */
+        .mail { background-color: #7f8c8d; }
+        .facebook { background-color: #3b5998; }
+        .x-twitter { background-color: #000000; }
+        .linkedin { background-color: #0077b5; }
+        .instagram { background-color: #e4405f; }
+        .whatsapp { background-color: #25d366; }
+        .tiktok { background-color: #010101; }
+
+        /* Hide sidebar on mobile to avoid covering content */
+        @media (max-width: 768px) {
+            .social-sidebar {
+                display: none;
+            }
+        }
+    </style>
+
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-
-    <!-- Preloader -->
     <div class="preloader">
-        {% comment %} <button class="th-btn preloaderCls"></button> {% endcomment %}
         <div class="preloader-inner">
             <div class="loader"><span></span><span></span><span></span><span></span><span></span><span></span></div>
         </div>
     </div>
 
-    <!-- Header -->
+    <div class="social-sidebar">
+        <a href="mailto:info@wamugundafarm.com" class="social-link mail" title="Email Us"><i class="fas fa-envelope"></i></a>
+        <a href="#" class="social-link facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-link x-twitter" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+        <a href="#" class="social-link linkedin" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-link instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="https://wa.me/254700000000" class="social-link whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        <a href="#" class="social-link tiktok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+    </div>
+
     {% include 'includes/header.html' %}
 
-    <!-- Main Content -->
-    {% block content %}
-    {% endblock %}
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 
-    <!-- Footer -->
     {% include 'includes/footer.html' %}
 
-    <!-- Scroll Top -->
     <div class="scroll-top">
         <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
             <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"></path>
         </svg>
     </div>
 
-    <!-- JS Files -->
     <script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
     <script src="{% static 'assets/js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>

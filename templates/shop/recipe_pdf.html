@@ -3,140 +3,383 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{{ recipe.title }} - Recipe</title>
+    <title>{{ recipe.title }} - Wamugunda Farm Recipe</title>
     <style type="text/css">
-        @page {
-            size: A4;
-            margin: 1.5cm;
-            @frame footer {
-                -pdf-frame-content: footerContent;
-                bottom: 0cm;
-                margin-left: 1cm;
-                margin-right: 1cm;
-                height: 1cm;
-            }
-        }
+        /* Simple, xhtml2pdf compatible CSS */
         body {
-            font-family: "Helvetica", sans-serif;
-            color: #333;
+            font-family: Helvetica, Arial, sans-serif;
+            color: #333333;
             line-height: 1.6;
             font-size: 12pt;
+            margin: 0;
+            padding: 0;
+            background: white;
         }
+        
         .container {
-            max-width: 100%;
-        }
-        h1 {
-            text-align: center;
-            color: #38a169;
-            font-size: 32pt;
-            margin-bottom: 5pt;
-        }
-        .tagline {
-            text-align: center;
-            color: #666;
-            font-style: italic;
-            margin-bottom: 20pt;
-        }
-        .recipe-image {
             width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin: 20pt 0;
+            padding: 20px;
         }
-        .info-bar {
-            display: flex;
-            justify-content: space-around;
-            background: #f0fff4;
-            padding: 15pt;
-            border-radius: 10px;
-            margin: 25pt 0;
-            flex-wrap: wrap;
-        }
-        .info-item {
+        
+        /* Header Section */
+        .recipe-header {
             text-align: center;
-            min-width: 120px;
+            background: #a0522d;
+            padding: 25px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            color: white;
         }
+        
+        h1 {
+            color: white;
+            font-size: 28pt;
+            font-weight: bold;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+        
+        .tagline {
+            color: #f4e4d7;
+            font-style: italic;
+            font-size: 12pt;
+            margin: 0 0 15px 0;
+        }
+        
+        .farm-badge {
+            display: inline-block;
+            background: white;
+            color: #a0522d;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 10pt;
+            text-transform: uppercase;
+        }
+        
+        /* Recipe Image - Simplified for PDF */
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+            border: 3px solid #e8d5c4;
+            padding: 5px;
+            background: #fefdfb;
+            border-radius: 8px;
+        }
+        
+        .image-placeholder {
+            background: #f4e4d7;
+            padding: 40px;
+            border-radius: 5px;
+            color: #a0522d;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        /* Info Bar */
+        .info-bar {
+            background: #f4e4d7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border: 2px solid #d4a574;
+            overflow: hidden;
+        }
+        
+        .info-row {
+            display: block;
+            clear: both;
+        }
+        
+        .info-item {
+            width: 25%;
+            float: left;
+            text-align: center;
+            padding: 10px 5px;
+            box-sizing: border-box;
+        }
+        
         .info-item strong {
-            color: #38a169;
+            color: #a0522d;
             font-size: 18pt;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .info-item .label {
+            color: #5d4a3a;
+            font-size: 10pt;
+            font-weight: 600;
+        }
+        
+        /* Section Headers */
+        h2 {
+            color: #a0522d;
+            font-size: 18pt;
+            font-weight: bold;
+            border-bottom: 3px solid #f4e4d7;
+            padding: 10px 0 8px 0;
+            margin: 25px 0 15px 0;
+            text-transform: uppercase;
+        }
+        
+        /* Ingredients List */
+        .ingredients-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e8d5c4;
+            margin: 20px 0;
+        }
+        
+        ul {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        li {
+            margin: 10px 0;
+            padding: 12px;
+            background: #fefdfb;
+            border-left: 4px solid #d2691e;
+            border-radius: 4px;
+            font-size: 12pt;
+            line-height: 1.6;
+            page-break-inside: avoid;
+        }
+        
+        li strong {
+            color: #a0522d;
+            font-weight: bold;
+            font-size: 13pt;
+            display: block;
+            margin-bottom: 2px;
+        }
+        
+        li em {
+            color: #8b7355;
+            font-size: 10pt;
+            font-style: italic;
             display: block;
         }
-        h2 {
-            color: #38a169;
-            border-bottom: 3px solid #c6f6d5;
-            padding-bottom: 8pt;
-            margin-top: 30pt;
+        
+        /* Instructions Section */
+        .instructions-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e8d5c4;
+            margin: 20px 0;
         }
-        ul {
-            margin: 15pt 0;
-            padding-left: 30pt;
-        }
-        li {
-            margin: 10pt 0;
-            font-size: 14pt;
-        }
+        
         .instructions {
             white-space: pre-line;
-            font-size: 14pt;
-            line-height: 1.8;
+            font-size: 12pt;
+            line-height: 1.7;
+            color: #333333;
         }
+        
+        .instructions p {
+            margin: 15px 0;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #a0522d;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Tips Box */
+        .tips-box {
+            background: #fff8e7;
+            border-left: 5px solid #d2691e;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-size: 11pt;
+            color: #333333;
+        }
+        
+        .tips-box strong {
+            color: #a0522d;
+            font-size: 12pt;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* Footer */
         .footer {
             text-align: center;
-            color: #777;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f4e4d7;
+            border-radius: 8px;
+            border: 2px solid #d4a574;
+            page-break-inside: avoid;
+        }
+        
+        .footer-brand {
+            color: #a0522d;
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .footer-info {
+            color: #5d4a3a;
             font-size: 10pt;
-            margin-top: 50pt;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        
+        .footer-social {
+            margin-top: 10px;
+            font-size: 10pt;
+            color: #8b7355;
+        }
+        
+        .footer-social strong {
+            color: #a0522d;
+        }
+        
+        /* Page Break Avoidance */
+        .page-break {
+            page-break-before: always;
+        }
+        
+        .avoid-break {
+            page-break-inside: avoid;
+        }
+        
+        /* Clear floats */
+        .clear {
+            clear: both;
+        }
+        
+        /* Print Optimizations */
+        @media print {
+            body {
+                font-size: 11pt;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 24pt;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>{{ recipe.title }}</h1>
-        <p class="tagline">Fresh from Wamugunda Farm to your table</p>
+        <!-- Header -->
+        <div class="recipe-header">
+            <h1>{{ recipe.title }}</h1>
+            <p class="tagline">Fresh from Wamugunda Farm to your table</p>
+            <div class="farm-badge">Farm Fresh Recipe</div>
+        </div>
 
-        <img src="{{ request.build_absolute_uri }}{{ recipe.image.url }}" class="recipe-image" alt="{{ recipe.title }}">
+        <!-- Recipe Image -->
+        <div class="image-container">
+            {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" style="max-width: 100%; height: auto;">
+            {% else %}
+                <div class="image-placeholder">
+                    🍽️ Recipe Image<br>
+                    <small>Image not available in PDF</small>
+                </div>
+            {% endif %}
+        </div>
 
+        <!-- Info Bar -->
         <div class="info-bar">
-            <div class="info-item">
-                <strong>{{ recipe.prep_time }}</strong>
-                <div>Prep (mins)</div>
+            <div class="info-row">
+                <div class="info-item">
+                    <strong>{{ recipe.prep_time }}</strong>
+                    <div class="label">Prep Time (min)</div>
+                </div>
+                <div class="info-item">
+                    <strong>{{ recipe.cook_time }}</strong>
+                    <div class="label">Cook Time (min)</div>
+                </div>
+                <div class="info-item">
+                    <strong>{{ recipe.servings }}</strong>
+                    <div class="label">Servings</div>
+                </div>
+                <div class="info-item">
+                    <strong>{{ recipe.get_difficulty_display }}</strong>
+                    <div class="label">Difficulty</div>
+                </div>
             </div>
-            <div class="info-item">
-                <strong>{{ recipe.cook_time }}</strong>
-                <div>Cook (mins)</div>
-            </div>
-            <div class="info-item">
-                <strong>{{ recipe.servings }}</strong>
-                <div>Servings</div>
-            </div>
-            <div class="info-item">
-                <strong>{{ recipe.get_difficulty_display }}</strong>
-                <div>Difficulty</div>
-            </div>
+            <div class="clear"></div>
         </div>
 
+        <!-- Ingredients Section -->
         <h2>Ingredients</h2>
-        <ul>
-            {% for ing in ingredients %}
-            <li>
-                <strong>{{ ing.quantity|default:"1 portion" }}</strong> {{ ing.product.name }}
-                {% if ing.notes %} <em>({{ ing.notes }})</em>{% endif %}
-            </li>
-            {% empty %}
-            <li>No ingredients listed yet.</li>
-            {% endfor %}
-        </ul>
-
-        <h2>Instructions</h2>
-        <div class="instructions">{{ recipe.instructions|linebreaksbr }}</div>
-
-        <div class="footer">
-            <p>Wamugunda Farm • Follow us @wamugundafarm • www.wamugundafarm.com</p>
+        <div class="ingredients-section avoid-break">
+            <ul>
+                {% for ing in ingredients %}
+                <li class="avoid-break">
+                    <strong>{{ ing.quantity|default:"1 portion" }}</strong> {{ ing.product.name }}
+                    {% if ing.notes %}<em>{{ ing.notes }}</em>{% endif %}
+                </li>
+                {% empty %}
+                <li>No ingredients listed yet.</li>
+                {% endfor %}
+            </ul>
         </div>
-    </div>
 
-    <div id="footerContent">
-        Page <pdf:pagenumber> of <pdf:pagecount>
+        <!-- Instructions Section -->
+        <h2>Cooking Instructions</h2>
+        <div class="instructions-section avoid-break">
+            <div class="instructions">
+                {% if recipe.instructions %}
+                    {% with instructions=recipe.instructions|linebreaksbr %}
+                        {% for paragraph in instructions.splitlines %}
+                            {% if paragraph.strip %}
+                                <div style="margin-bottom: 15px;">
+                                    <span class="step-number">{{ forloop.counter }}</span>
+                                    {{ paragraph }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                {% else %}
+                    <p>No instructions provided.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Tips Box -->
+        <div class="tips-box avoid-break">
+            <strong>Chef's Tip:</strong>
+            For the best flavor, use fresh ingredients from Wamugunda Farm. Our produce is harvested at peak ripeness to ensure maximum taste and nutrition in every dish!
+        </div>
+
+        <!-- Footer -->
+        <div class="footer avoid-break">
+            <div class="footer-brand">Wamugunda Farm</div>
+            <div class="footer-info">
+                Premium organic produce grown with care and delivered fresh<br>
+                Supporting local farming and sustainable agriculture
+            </div>
+            <div class="footer-social">
+                <strong>Follow us:</strong> @wamugundafarm<br>
+                <strong>Visit:</strong> www.wamugundafarm.com<br>
+                <strong>Email:</strong> rm2657zxn6@privaterelay.appleid.com
+            </div>
+        </div>
     </div>
 </body>
 </html>

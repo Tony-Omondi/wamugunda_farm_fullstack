@@ -20,103 +20,381 @@
 <section class="product-details space-top space-extra-bottom">
     <div class="container">
         <div class="row gx-60">
-            <!-- Recipe Image -->
+
             <div class="col-lg-6 mb-4 mb-lg-0">
-                <div class="product-big-img rounded shadow overflow-hidden">
-                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-fluid w-100" style="height: 500px; object-fit: cover;">
+                <div class="rounded shadow overflow-hidden position-relative">
+                    {% if recipe.image %}
+                        <img src="{{ recipe.image.url }}" 
+                             alt="{{ recipe.title }}" 
+                             class="img-fluid w-100" 
+                             style="height:500px; object-fit:cover;">
+                    {% else %}
+                        <img src="{% static 'assets/img/product/no-image.png' %}" 
+                             alt="No Image Available" 
+                             class="img-fluid w-100" 
+                             style="height:500px; object-fit:cover; background-color: #f0f0f0;">
+                    {% endif %}
+                    
+                    <div class="position-absolute top-0 start-0 m-3 badge bg-success fs-6 shadow">
+                        <i class="far fa-clock me-2"></i>{{ recipe.prep_time|add:recipe.cook_time }} mins
+                    </div>
                 </div>
             </div>
 
-            <!-- Recipe Info -->
             <div class="col-lg-6">
-                <h2 class="product-title mb-4">{{ recipe.title }}</h2>
+                <h2 class="mb-3">{{ recipe.title }}</h2>
 
-                <!-- Badges: Difficulty + Total Time + Servings (FIXED!) -->
-                <div class="d-flex flex-wrap gap-3 mb-4 align-items-center">
-                    <span class="badge bg-success fs-5">
-                        {{ recipe.get_difficulty_display }}
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 fs-6 px-3 py-2">
+                        Difficulty: {{ recipe.get_difficulty_display }}
                     </span>
-
-                    <span class="badge bg-light text-dark fs-5">
-                        <i class="far fa-clock me-2"></i>
-                        {{ recipe.prep_time|add:recipe.cook_time }} mins
+                    <span class="badge bg-secondary bg-opacity-10 text-dark border border-secondary border-opacity-25 fs-6 px-3 py-2">
+                        <i class="far fa-users me-2"></i>{{ recipe.servings }} Servings
                     </span>
-
-                    <span class="badge bg-light text-dark fs-5">
-                        <i class="far fa-users me-2"></i>
-                        {{ recipe.servings }} 
-                        {% if recipe.servings == 1 %}serving{% else %}servings{% endif %}
+                    <span class="badge bg-secondary bg-opacity-10 text-dark border border-secondary border-opacity-25 fs-6 px-3 py-2">
+                        <i class="far fa-utensils me-2"></i>{{ recipe.category }}
                     </span>
                 </div>
 
-                <!-- Description -->
                 {% if recipe.description %}
-                <div class="mb-5">
+                <div class="mb-4 text-muted" style="font-size: 1.1rem; line-height: 1.6;">
                     {{ recipe.description|linebreaks }}
                 </div>
                 {% endif %}
 
-                <!-- Ingredients List -->
-                <h4 class="mt-5 mb-3">Ingredients</h4>
-                <ul class="list-group mb-5">
-                    {% for ing in ingredient_list %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center py-3 border-0 bg-light rounded mb-2">
-                        <div>
-                            <strong class="text-success">{{ ing.quantity|default:"–" }}</strong>
-                            <span class="ms-2">{{ ing.product.name }}</span>
-                            {% if ing.notes %}
-                                <small class="text-muted d-block">{{ ing.notes }}</small>
-                            {% endif %}
-                        </div>
-                        <a href="{{ ing.product.get_absolute_url }}" class="btn btn-sm btn-outline-success">
-                            Buy Now
-                        </a>
-                    </li>
-                    {% empty %}
-                    <li class="list-group-item text-muted text-center py-4">
-                        No ingredients linked yet.
-                    </li>
-                    {% endfor %}
-                </ul>
+                <div class="card border-0 shadow-sm bg-light mb-4">
+                    <div class="card-body p-4">
+                        <h4 class="card-title text-success mb-3">Ingredients</h4>
+                        <ul class="list-group list-group-flush bg-transparent">
+                            {% for ing in ingredient_list %}
+                            <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0 py-2 border-bottom">
+                                <div>
+                                    <i class="fas fa-check-circle text-success me-2 fs-xs"></i>
+                                    <strong>{{ ing.quantity|default:"" }}</strong> {{ ing.product.name }}
+                                    {% if ing.notes %}
+                                        <small class="text-muted ms-1">({{ ing.notes }})</small>
+                                    {% endif %}
+                                </div>
+                                <a href="{{ ing.product.get_absolute_url }}" class="btn btn-sm btn-outline-success rounded-pill px-3">
+                                    View Product
+                                </a>
+                            </li>
+                            {% empty %}
+                            <li class="list-group-item bg-transparent text-muted fst-italic">
+                                No specific ingredients listed.
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
 
-                <!-- Action Buttons -->
-                <div class="d-flex flex-wrap gap-3">
-                    <a href="{% url 'shop:recipe_pdf' recipe.slug %}" class="th-btn btn-lg">
-                        <i class="far fa-file-pdf me-2"></i> Download Recipe PDF
+                <div class="d-flex flex-wrap gap-3 mb-4">
+                    {% if recipe.slug %}
+                    <a href="{% url 'shop:recipe_pdf' recipe.slug %}" class="th-btn style4">
+                        <i class="far fa-file-pdf me-2"></i>Download PDF Recipe
                     </a>
-                    <a href="https://wa.me/254726857007?text=Hi!%20I'd%20love%20to%20make:%20{{ recipe.title|urlencode }}%20Can%20you%20send%20me%20the%20ingredients?"
-                       target="_blank" class="th-btn btn-success btn-lg">
-                        <i class="fab fa-whatsapp me-2"></i> Order via WhatsApp
+                    {% endif %}
+
+                    <a href="https://wa.me/254726857007?text=Hi!%20I'd%20like%20to%20order%20ingredients%20for:%20{{ recipe.title|urlencode }}%20from%20Wamugunda%20Farm.%20Recipe%20ID:%20{{ recipe.id }}" 
+                       target="_blank" 
+                       class="th-btn btn-success">
+                        <i class="fab fa-whatsapp me-2"></i>Order Ingredients via WhatsApp
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- Instructions Section -->
         <div class="row mt-5">
             <div class="col-12">
-                <div class="p-5 bg-light rounded shadow-sm">
-                    <h3 class="mb-4 text-success">Step-by-Step Instructions</h3>
-                    <div class="instructions" style="white-space: pre-line; font-size: 1.1rem/1.8 'Georgia', serif; color: #333;">
-                        {{ recipe.instructions }}
+                <div class="p-4 p-lg-5 bg-white border rounded shadow-sm">
+                    <h3 class="mb-4 text-success border-bottom pb-3">Step-by-Step Instructions</h3>
+                    <div class="recipe-instructions" style="font-size: 1.1rem; line-height: 1.8; color: #444;">
+                        {{ recipe.instructions|linebreaks }}
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Featured Products -->
-        {% if featured_products %}
-        <div class="mt-5">
-            <h3 class="text-center mb-4">Featured Products in This Recipe</h3>
-            <div class="row g-4 justify-content-center">
-                {% for p in featured_products %}
-                <div class="col-md-6 col-lg-4 col-xl-3">
-                    {% include "shop/partials/product_card.html" with product=p %}
+        <!-- Chef's Tips Section -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card border-success border-2">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Chef's Tips</h4>
+                    </div>
+                    <div class="card-body bg-light-success">
+                        <div class="row align-items-center">
+                            <div class="col-md-1 text-center">
+                                <i class="fas fa-seedling fa-3x text-success"></i>
+                            </div>
+                            <div class="col-md-11">
+                                <p class="mb-0" style="font-size: 1.1rem;">
+                                    <strong>Farm Fresh Advice:</strong> For the best results, use fresh ingredients from Wamugunda Farm. 
+                                    Our produce is harvested at peak ripeness to ensure maximum flavor and nutrition. 
+                                    Store ingredients properly and use within 2-3 days for optimal freshness.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
-        {% endif %}
+
     </div>
 </section>
+
+<!-- Footer Section -->
+<footer class="footer-wrapper bg-dark text-white pt-5">
+    <div class="container">
+        <div class="row g-4">
+            <!-- About Section -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-widget">
+                    <div class="footer-logo mb-3">
+                        <h3 class="text-white mb-2">🌱 Wamugunda Farm</h3>
+                        <p class="text-light mb-0">Fresh from our farm to your table</p>
+                    </div>
+                    <p class="text-light mb-3">
+                        We are dedicated to providing the freshest, organic produce straight from our fields. 
+                        Supporting local farming and sustainable agriculture since 2010.
+                    </p>
+                    <div class="footer-social">
+                        <h6 class="text-white mb-3">Follow Us:</h6>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6">
+                <div class="footer-widget">
+                    <h5 class="widget-title text-white mb-4">Quick Links</h5>
+                    <ul class="footer-menu list-unstyled">
+                        <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
+                        <li><a href="{% url 'shop:product_list' %}" class="footer-link">Shop</a></li>
+                        <li><a href="{% url 'shop:recipe_list' %}" class="footer-link">Recipes</a></li>
+                        <li><a href="{% url 'cart:cart_detail' %}" class="footer-link">My Cart</a></li>
+                        <li><a href="{% url 'orders:order_history' %}" class="footer-link">My Orders</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h5 class="widget-title text-white mb-4">Contact Us</h5>
+                    <ul class="footer-contact list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-phone-alt me-2"></i>
+                            <a href="tel:+254726857007" class="footer-link">+254 726 857 007</a>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-envelope me-2"></i>
+                            <a href="mailto:rm2657zxn6@privaterelay.appleid.com" class="footer-link">
+                                rm2657zxn6@privaterelay.appleid.com
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <span class="text-light">Nyeri, Kenya</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock me-2"></i>
+                            <span class="text-light">Mon-Sat: 8:00 AM - 6:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-widget">
+                    <h5 class="widget-title text-white mb-4">Stay Updated</h5>
+                    <p class="text-light mb-3">Subscribe to get recipes and farm updates</p>
+                    <form class="newsletter-form">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Your email" required>
+                            <button class="btn btn-success" type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <p class="text-light mt-3 small">
+                        Get notified about new recipes, seasonal produce, and special offers.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-bottom py-4 mt-4 border-top border-light">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-light">
+                        &copy; {{ current_year }} Wamugunda Farm. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="#" class="footer-link">Privacy Policy</a></li>
+                        <li class="list-inline-item"><a href="#" class="footer-link">Terms of Service</a></li>
+                        <li class="list-inline-item"><a href="#" class="footer-link">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* === CRITICAL FIX: FORCE HIDE PRELOADER === */
+    .preloader, #preloader, .th-preloader {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        z-index: -9999 !important;
+        pointer-events: none !important;
+    }
+    
+    body {
+        overflow: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Recipe specific styles */
+    .recipe-instructions p {
+        margin-bottom: 1.5rem;
+    }
+    
+    .rounded.shadow img {
+        transition: transform 0.3s ease;
+    }
+    .rounded.shadow:hover img {
+        transform: scale(1.02);
+    }
+
+    /* Footer Styles */
+    .footer-wrapper {
+        background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+    }
+    
+    .footer-link {
+        color: #ddd;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        display: inline-block;
+        padding: 2px 0;
+    }
+    
+    .footer-link:hover {
+        color: #28a745;
+        text-decoration: none;
+    }
+    
+    .footer-menu li {
+        margin-bottom: 8px;
+    }
+    
+    .footer-contact li {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .footer-contact i {
+        width: 20px;
+        color: #28a745;
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+        background: #28a745;
+        transform: translateY(-3px);
+    }
+    
+    .bg-light-success {
+        background-color: rgba(40, 167, 69, 0.05);
+    }
+    
+    .border-success {
+        border-color: #28a745 !important;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .footer-widget {
+            margin-bottom: 30px;
+        }
+        
+        .rounded.shadow img {
+            height: 300px !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Get current year for copyright
+    document.addEventListener('DOMContentLoaded', function() {
+        const yearSpan = document.querySelector('.current-year');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+        
+        // Newsletter form submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                if (email) {
+                    alert('Thank you for subscribing! You will receive updates from Wamugunda Farm.');
+                    this.reset();
+                }
+            });
+        }
+        
+        // Smooth scroll for footer links
+        document.querySelectorAll('.footer-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

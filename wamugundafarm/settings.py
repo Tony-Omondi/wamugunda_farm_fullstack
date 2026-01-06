@@ -85,6 +85,20 @@ DATABASES = {
     }
 }
 
+# Database
+# Database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'wamugund_mywebsite',    # Exact name from your cPanel
+#         'USER': '',        # Exact user from your cPanel
+#         'PASSWORD': '', # The password you created for wamugund_admin
+#         'HOST': 'localhost',             # Standard for cPanel
+#         'PORT': '5432',                  # Standard PostgreSQL port
+#     }
+# }
+
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -110,3 +124,15 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.INFO: 'alert-info',
 }
+
+# In settings.py
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.wamugundafarm.co.ke'   # Your cPanel mail server
+EMAIL_PORT = 465                            # SSL Port
+EMAIL_USE_SSL = True                        # Secure connection
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = 'orders@wamugundafarm.co.ke'
+EMAIL_HOST_PASSWORD = 'c.qg+ry0(is%N-(F'
+DEFAULT_FROM_EMAIL = 'Wamugunda Farm <orders@wamugundafarm.co.ke>'

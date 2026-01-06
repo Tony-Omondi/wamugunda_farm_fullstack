@@ -1,4 +1,3 @@
-# cart/views.py — FINAL VERSION (AJAX + WhatsApp + PDF + Shipping)
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -6,14 +5,16 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.core.files import File
 from django.conf import settings
+from django.core.mail import EmailMessage
 from xhtml2pdf import pisa
 from io import BytesIO
 from datetime import datetime
-from shop.models import Product
-from .cart import Cart
-from cart.models import Order  # Your Order model
 from urllib.parse import quote
 
+# --- IMPORTS ---
+from shop.models import Product
+from .cart import Cart
+from .models import Order  # <--- FIXED: Importing from current app (.models)
 
 SHIPPING_ZONES = {
     'Thika Road': 250, 'Garden Estate': 250, 'Runda': 300, 'Muthaiga': 300,
@@ -21,19 +22,13 @@ SHIPPING_ZONES = {
     'Redhill Road': 400, 'Sarit Center': 300, 'Waiyaki Way': 300,
 }
 
-# AJAX ADD TO CART — MAIN FIX (NO PAGE RELOAD!)
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    
-    # Get quantity (default 1)
     quantity = int(request.POST.get('quantity', 1))
-    
-    # Add to cart
     cart.add(product=product, quantity=quantity)
 
-    # Check if request is AJAX
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return JsonResponse({
             'success': True,
@@ -42,17 +37,14 @@ def cart_add(request, product_id):
             'cart_price': float(cart.get_total_price())
         })
 
-    # Normal form submission (fallback)
     messages.success(request, f'"{product.name}" added to cart!')
     return redirect('cart:cart_detail')
-
 
 def cart_remove(request, product_id):
     cart = Cart(request)
     cart.remove(str(product_id))
     messages.success(request, 'Item removed.')
     return redirect('cart:cart_detail')
-
 
 @require_POST
 def cart_update(request):
@@ -74,7 +66,6 @@ def cart_update(request):
         messages.success(request, 'Cart updated!')
     return redirect('cart:cart_detail')
 
-
 @require_POST
 def set_shipping_zone(request):
     zone = request.POST.get('shipping_zone')
@@ -85,7 +76,6 @@ def set_shipping_zone(request):
         request.session.pop('shipping_zone', None)
         messages.info(request, "Delivery zone cleared.")
     return redirect('cart:cart_detail')
-
 
 def cart_detail(request):
     cart = Cart(request)
@@ -101,19 +91,30 @@ def cart_detail(request):
         'total_with_shipping': total
     })
 
-
+# --- ORDER CREATION LOGIC ---
 @require_POST
 def create_whatsapp_order(request):
     cart = Cart(request)
     if len(cart) == 0:
         return JsonResponse({'error': 'Cart is empty'}, status=400)
 
+    # 1. Get Customer Details from AJAX Form Data
+    full_name = request.POST.get('full_name')
+    email = request.POST.get('email')
+    phone = request.POST.get('phone')
+
+    if not full_name or not email or not phone:
+        return JsonResponse({'error': 'Please fill in Name, Email, and Phone.'}, status=400)
+
     selected_zone = request.session.get('shipping_zone', 'Not selected')
     shipping_cost = SHIPPING_ZONES.get(selected_zone, 0)
     total = cart.get_total_price() + shipping_cost
 
-    # Save order to DB
+    # 2. Save Order to Database
     order = Order.objects.create(
+        full_name=full_name,
+        email=email,
+        phone=phone,
         total_paid=cart.get_total_price(),
         shipping_zone=selected_zone,
         shipping_cost=shipping_cost,
@@ -125,7 +126,7 @@ def create_whatsapp_order(request):
         } for item in cart]
     )
 
-    # Generate PDF Invoice
+    # 3. Generate PDF Invoice
     context = {
         'order': order,
         'cart': cart,
@@ -138,35 +139,64 @@ def create_whatsapp_order(request):
     result = BytesIO()
     pdf = pisa.pisaDocument(BytesIO(html.encode('UTF-8')), result)
     
+    pdf_content = result.getvalue()
+
     if not pdf.err:
-        pdf_file = BytesIO(result.getvalue())
-        order.pdf_invoice.save(f'invoice_{order.order_id}.pdf', File(pdf_file))
+        order.pdf_invoice.save(f'invoice_{order.order_id}.pdf', File(BytesIO(pdf_content)))
         order.save()
 
-    # Build the plain text message first
+    # 4. Send Confirmation Email
+    try:
+        subject = f"Order Confirmation - #{order.order_id} - Wamugunda Farm"
+        body = f"""Dear {order.full_name},
+
+Thank you for your order!
+
+Order ID: {order.order_id}
+Total Amount: KSh {total:,}
+Delivery Zone: {selected_zone}
+
+Your official invoice is attached to this email.
+
+We are processing your order and will contact you shortly via WhatsApp/Phone for delivery.
+
+Regards,
+Wamugunda Farm Team
+"""
+        email_msg = EmailMessage(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [order.email],
+        )
+        email_msg.attach(f'Invoice_{order.order_id}.pdf', pdf_content, 'application/pdf')
+        email_msg.send(fail_silently=True)
+    except Exception as e:
+        print(f"Error sending email: {e}")
+
+    # 5. Build WhatsApp Message
     items_text = "\n".join([
-        f"• {item['quantity']} × {item['product'].name} = KSh {item['total_price']}"
+        f"• {item['quantity']} × {item['product'].name}"
         for item in cart
     ])
 
-    plain_message = f"""NEW ORDER #{order.order_id}
+    plain_message = f"""*NEW ORDER #{order.order_id}*
+👤 Name: {full_name}
+📞 Phone: {phone}
+✉️ Email: {email}
 
-Date: {datetime.now().strftime('%d/%m/%Y %I:%M %p')}
-
-Items:
+*Items:*
 {items_text}
 
-Delivery Zone: {selected_zone}
-Delivery Fee: KSh {shipping_cost}
-TOTAL: KSh {total:,}
+📍 Zone: {selected_zone}
+🚚 Delivery: KSh {shipping_cost}
+💰 *TOTAL: KSh {total:,}*
 
-Thank you for your order! 🌱"""
+Thank you! 🌱"""
 
-    # URL encode the entire message
     encoded_message = quote(plain_message)
     whatsapp_url = f"https://wa.me/254726857007?text={encoded_message}"
 
-    # Clear cart after order
     cart.clear()
 
     return JsonResponse({

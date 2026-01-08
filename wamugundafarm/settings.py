@@ -14,18 +14,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG') == 'True'
+# On the server, ensure your .env file has DEBUG=False
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = [
+    'wamugundafarm.co.ke', 
+    'www.wamugundafarm.co.ke', 
+    '127.0.0.1', 
+    'localhost'
+]
 
 # ==================== APPLICATION DEFINITION ====================
 INSTALLED_APPS = [
     # --- UNFOLD (Must be BEFORE django.contrib.admin) ---
     "unfold",
-    "unfold.contrib.filters",  # Optional: Adds nice sidebar filters
-    "unfold.contrib.forms",    # Optional: Adds Tailwind forms
-    "unfold.contrib.import_export", # Optional: If you use import/export
+    "unfold.contrib.filters",  # Adds nice sidebar filters
+    "unfold.contrib.forms",    # Adds Tailwind forms
+    "unfold.contrib.import_export", # If you use import/export
     
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Critical for cPanel static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -73,11 +79,16 @@ TEMPLATES = [
 
 # ==================== STATIC & MEDIA FILES ====================
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles' # Where files are collected on cPanel
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Enable WhiteNoise compression and caching for production
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Use the environment variable if set (for cPanel path), otherwise default to local
+MEDIA_ROOT = os.getenv('MEDIA_ROOT', str(BASE_DIR / 'media'))
 
 # ==================== CART SESSION ID ====================
 CART_SESSION_ID = 'cart'
@@ -85,13 +96,27 @@ CART_SESSION_ID = 'cart'
 # ==================== WSGI ====================
 WSGI_APPLICATION = 'wamugundafarm.wsgi.application'
 
-# ==================== DATABASE ====================
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# ==================== DATABASE CONFIGURATION ====================
+if DEBUG:
+    # LOCAL (Laptop): Use SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    # PRODUCTION (cPanel): Use PostgreSQL
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+        }
+    }
 
 # ==================== PASSWORD VALIDATION ====================
 AUTH_PASSWORD_VALIDATORS = [
@@ -129,17 +154,19 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = f'Wamugunda Farm <{EMAIL_HOST_USER}>'
 
+
 # ==================== UNFOLD THEME SETTINGS ====================
 UNFOLD = {
     "SITE_TITLE": "Wamugunda Farm Admin",
     "SITE_HEADER": "Wamugunda Farm",
     "SITE_URL": "/",
-    "SITE_ICON": lambda request: static("assets/img/logo2.png"),
-    # "SITE_SYMBOL": "agriculture",
+    # Place 'logo.png' in static/assets/img/ or comment this line to use text
+    "SITE_ICON": lambda request: static("assets/img/logo.png"), 
+    # "SITE_SYMBOL": "agriculture", # Fallback symbol
     "SHOW_HISTORY": True,
     "SHOW_VIEW_ON_SITE": True,
 
-    # 🟢 Custom Brown/Earth Color Palette
+    # 🟢 Brown/Earth Color Palette
     "COLORS": {
         "primary": {
             "50": "251 246 243",
@@ -147,7 +174,7 @@ UNFOLD = {
             "200": "234 213 202",
             "300": "222 191 176",
             "400": "207 160 141",
-            "500": "160 82 45",    # Main Brand Brown
+            "500": "160 82 45",
             "600": "133 66 35",
             "700": "104 50 26",
             "800": "77 36 18",
@@ -159,7 +186,7 @@ UNFOLD = {
     # 🟢 Custom Sidebar Navigation
     "SIDEBAR": {
         "show_search": True,
-        "show_all_applications": False, # Set to False to strictly follow this layout
+        "show_all_applications": False, 
         "navigation": [
             {
                 "title": "Store Management",
@@ -208,7 +235,7 @@ UNFOLD = {
                     },
                     {
                         "title": "Gallery Categories",
-                        "icon": "perm_media",  # <--- FIXED ICON
+                        "icon": "perm_media",
                         "link": reverse_lazy("admin:core_gallerycategory_changelist"),
                     },
                 ],

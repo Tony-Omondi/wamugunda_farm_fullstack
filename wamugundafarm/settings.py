@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv # Import this
+from dotenv import load_dotenv
+from django.urls import reverse_lazy
+from django.templatetags.static import static
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,8 +19,14 @@ DEBUG = os.getenv('DEBUG') == 'True'
 ALLOWED_HOSTS = ['*']
 
 
-# Application definition
+# ==================== APPLICATION DEFINITION ====================
 INSTALLED_APPS = [
+    # --- UNFOLD (Must be BEFORE django.contrib.admin) ---
+    "unfold",
+    "unfold.contrib.filters",  # Optional: Adds nice sidebar filters
+    "unfold.contrib.forms",    # Optional: Adds Tailwind forms
+    "unfold.contrib.import_export", # Optional: If you use import/export
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,7 +85,7 @@ CART_SESSION_ID = 'cart'
 # ==================== WSGI ====================
 WSGI_APPLICATION = 'wamugundafarm.wsgi.application'
 
-# Database
+# ==================== DATABASE ====================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -85,7 +93,7 @@ DATABASES = {
     }
 }
 
-# Password validation
+# ==================== PASSWORD VALIDATION ====================
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -93,7 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
+# ==================== INTERNATIONALIZATION ====================
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Africa/Nairobi'
 USE_I18N = True
@@ -117,7 +125,110 @@ EMAIL_HOST = 'mail.wamugundafarm.co.ke'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
-# These now load securely from the .env file
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = f'Wamugunda Farm <{EMAIL_HOST_USER}>'
+
+# ==================== UNFOLD THEME SETTINGS ====================
+UNFOLD = {
+    "SITE_TITLE": "Wamugunda Farm Admin",
+    "SITE_HEADER": "Wamugunda Farm",
+    "SITE_URL": "/",
+    "SITE_ICON": lambda request: static("assets/img/logo2.png"),
+    # "SITE_SYMBOL": "agriculture",
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": True,
+
+    # 🟢 Custom Brown/Earth Color Palette
+    "COLORS": {
+        "primary": {
+            "50": "251 246 243",
+            "100": "245 235 229",
+            "200": "234 213 202",
+            "300": "222 191 176",
+            "400": "207 160 141",
+            "500": "160 82 45",    # Main Brand Brown
+            "600": "133 66 35",
+            "700": "104 50 26",
+            "800": "77 36 18",
+            "900": "53 24 12",
+            "950": "31 12 5",
+        },
+    },
+
+    # 🟢 Custom Sidebar Navigation
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": False, # Set to False to strictly follow this layout
+        "navigation": [
+            {
+                "title": "Store Management",
+                "separator": True,
+                "items": [
+                    {
+                        "title": "Products",
+                        "icon": "inventory_2",
+                        "link": reverse_lazy("admin:shop_product_changelist"),
+                    },
+                    {
+                        "title": "Orders",
+                        "icon": "shopping_cart",
+                        "link": reverse_lazy("admin:cart_order_changelist"),
+                    },
+                    {
+                        "title": "Recipes",
+                        "icon": "restaurant_menu",
+                        "link": reverse_lazy("admin:shop_recipe_changelist"),
+                    },
+                    {
+                        "title": "Categories",
+                        "icon": "category",
+                        "link": reverse_lazy("admin:shop_category_changelist"),
+                    },
+                    {
+                        "title": "Reviews",
+                        "icon": "star",
+                        "link": reverse_lazy("admin:shop_review_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": "Website Content",
+                "separator": True,
+                "items": [
+                    {
+                        "title": "Testimonials",
+                        "icon": "thumbs_up_down",
+                        "link": reverse_lazy("admin:core_testimonial_changelist"),
+                    },
+                    {
+                        "title": "Gallery",
+                        "icon": "collections",
+                        "link": reverse_lazy("admin:core_galleryitem_changelist"),
+                    },
+                    {
+                        "title": "Gallery Categories",
+                        "icon": "perm_media",  # <--- FIXED ICON
+                        "link": reverse_lazy("admin:core_gallerycategory_changelist"),
+                    },
+                ],
+            },
+            {
+                "title": "User Management",
+                "separator": True,
+                "items": [
+                    {
+                        "title": "Groups",
+                        "icon": "group",
+                        "link": reverse_lazy("admin:auth_group_changelist"),
+                    },
+                    {
+                        "title": "Users",
+                        "icon": "person",
+                        "link": reverse_lazy("admin:auth_user_changelist"),
+                    },
+                ],
+            },
+        ],
+    },
+}

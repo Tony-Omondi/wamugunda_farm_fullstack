@@ -1,6 +1,7 @@
-# shop/admin.py
 from django.contrib import admin
 from django.utils.html import format_html
+from unfold.admin import ModelAdmin, TabularInline  # Import Unfold classes
+from unfold.decorators import display               # Import Unfold display decorator
 from .models import (
     Category,
     Product,
@@ -13,19 +14,19 @@ from .models import (
 
 # ==================== INLINES ====================
 
-class ProductImageInline(admin.TabularInline):
+class ProductImageInline(TabularInline):
     model = ProductImage
     extra = 1
     fields = ('image', 'alt_text', 'is_main')
 
 
-class ReviewInline(admin.TabularInline):
+class ReviewInline(TabularInline):
     model = Review
     extra = 0
     readonly_fields = ('name', 'email', 'rating', 'comment', 'created_at')
 
 
-class RecipeIngredientInline(admin.TabularInline):
+class RecipeIngredientInline(TabularInline):
     model = RecipeIngredient
     extra = 1
     autocomplete_fields = ['product']
@@ -35,14 +36,14 @@ class RecipeIngredientInline(admin.TabularInline):
 # ==================== ADMIN CLASSES ====================
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(ModelAdmin):
     list_display = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ('name',)
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ModelAdmin):
     list_display = ('name', 'category', 'price', 'old_price', 'in_stock', 'is_hot', 'is_new', 'on_sale', 'created')
     list_editable = ('price', 'old_price', 'in_stock', 'is_hot', 'is_new', 'on_sale')
     list_filter = ('category', 'available', 'in_stock', 'is_hot', 'is_new', 'on_sale', 'created')
@@ -54,7 +55,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 @admin.register(Review)
-class ReviewAdmin(admin.ModelAdmin):
+class ReviewAdmin(ModelAdmin):
     list_display = ('product', 'name', 'rating', 'created_at', 'is_approved')
     list_filter = ('rating', 'is_approved', 'created_at', 'product__category')
     search_fields = ('name', 'product__name', 'comment')
@@ -71,7 +72,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 @admin.register(Recipe)
-class RecipeAdmin(admin.ModelAdmin):
+class RecipeAdmin(ModelAdmin):
     list_display = ('thumbnail', 'title', 'difficulty', 'prep_time', 'cook_time', 'servings', 'is_active', 'created_at')
     list_filter = ('difficulty', 'is_active', 'created_at')
     search_fields = ('title', 'description', 'instructions')
@@ -101,7 +102,8 @@ class RecipeAdmin(admin.ModelAdmin):
         }),
     )
 
-    # Beautiful image preview in list
+    # Using Unfold's @display decorator for the image preview
+    @display(description="Preview")
     def thumbnail(self, obj):
         if obj.image:
             return format_html(
@@ -109,13 +111,3 @@ class RecipeAdmin(admin.ModelAdmin):
                 obj.image.url
             )
         return "(No image)"
-    thumbnail.short_description = "Preview"
-    thumbnail.allow_tags = True
-
-
-# Optional: If you ever want RecipeIngredient as standalone (usually not needed)
-# @admin.register(RecipeIngredient)
-# class RecipeIngredientAdmin(admin.ModelAdmin):
-#     list_display = ('recipe', 'product', 'quantity')
-#     list_filter = ('recipe',)
-#     autocomplete_fields = ['product', 'recipe']

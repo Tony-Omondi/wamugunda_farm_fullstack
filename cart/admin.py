@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import Order  # <--- Changed from orders.models to .models
+from unfold.admin import ModelAdmin  # Imported Unfold to match your theme
+from .models import Order
 
 @admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ModelAdmin):
     list_display = (
         'order_id',
         'full_name',
@@ -34,5 +35,6 @@ class OrderAdmin(admin.ModelAdmin):
     )
 
     def get_total_display(self, obj):
+        # This calls the method from your Order model
         return f"KSh {obj.get_total_with_shipping()}"
     get_total_display.short_description = 'Total'

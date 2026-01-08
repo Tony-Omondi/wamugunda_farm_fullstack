@@ -397,7 +397,6 @@
 <body>
 <div class="container">
 
-    <!-- Header -->
     <div class="header">
         <div class="brand-section">
             <div class="logo-box">WF</div>
@@ -412,12 +411,10 @@
         </div>
     </div>
 
-    <!-- Status Banner -->
     <div class="status-banner">
         ⏳ Payment Pending - Due on Receipt • Invoice Date: {{ date }}
     </div>
 
-    <!-- Client & Invoice Info -->
     <div class="info-grid">
         <div class="info-card">
             <div class="info-card-header">📍 Bill To</div>
@@ -459,14 +456,12 @@
         </div>
     </div>
 
-    <!-- Amount Due -->
     <div class="amount-due-card">
         <div class="amount-label">Total Amount Due</div>
         <div class="amount-value">KES {{ total|floatformat:2 }}</div>
         <div class="amount-subtitle">Payment required before delivery • Includes delivery fee</div>
     </div>
 
-    <!-- Order Items -->
     <div class="section-header">🛒 Items Ordered</div>
     <table class="items-table">
         <thead>
@@ -504,7 +499,6 @@
         </tbody>
     </table>
 
-    <!-- Payment Instructions & Totals -->
     <div class="summary-grid">
         <div class="payment-card">
             <div class="info-card-header">💳 Payment Instructions</div>
@@ -530,8 +524,7 @@
                 <div class="step-content">
                     <div class="step-title">Enter Account Number</div>
                     <div class="step-detail">
-                        Use your Order ID: 
-                        <span style="font-weight: bold; color: #a0522d; font-size: 11pt;">{{ order.order_id }}</span>
+                        <span style="font-weight: bold; color: #a0522d; font-size: 11pt;">0726857007</span>
                     </div>
                 </div>
             </div>
@@ -545,7 +538,7 @@
             </div>
             
             <div class="highlight-box">
-                <strong>⚠️ IMPORTANT:</strong> Always use <strong>{{ order.order_id }}</strong> as the Account Number for proper tracking. Payments with incorrect details may delay your order.
+                <strong>⚠️ IMPORTANT:</strong> Please ensure you enter <strong>0726857007</strong> as the Account Number for proper payment processing.
             </div>
         </div>
         
@@ -571,7 +564,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <div class="footer">
         <div class="thank-you">🌱 Thank You For Your Order! 🌱</div>
         

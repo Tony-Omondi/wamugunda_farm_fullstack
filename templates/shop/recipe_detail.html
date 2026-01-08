@@ -115,7 +115,6 @@
             </div>
         </div>
 
-        <!-- Chef's Tips Section -->
         <div class="row mt-5">
             <div class="col-12">
                 <div class="card border-success border-2">
@@ -143,113 +142,8 @@
     </div>
 </section>
 
-<!-- Footer Section -->
-<footer class="footer-wrapper bg-dark text-white pt-5">
-    <div class="container">
-        <div class="row g-4">
-            <!-- About Section -->
-            <div class="col-lg-4 col-md-6">
-                <div class="footer-widget">
-                    <div class="footer-logo mb-3">
-                        <h3 class="text-white mb-2">🌱 Wamugunda Farm</h3>
-                        <p class="text-light mb-0">Fresh from our farm to your table</p>
-                    </div>
-                    <p class="text-light mb-3">
-                        We are dedicated to providing the freshest, organic produce straight from our fields. 
-                        Supporting local farming and sustainable agriculture since 2010.
-                    </p>
-                    <div class="footer-social">
-                        <h6 class="text-white mb-3">Follow Us:</h6>
-                        <div class="social-links">
-                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{% include 'includes/footer.html' %}
 
-            <!-- Quick Links -->
-            <div class="col-lg-2 col-md-6">
-                <div class="footer-widget">
-                    <h5 class="widget-title text-white mb-4">Quick Links</h5>
-                    <ul class="footer-menu list-unstyled">
-                        <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
-                        <li><a href="{% url 'shop:product_list' %}" class="footer-link">Shop</a></li>
-                        <li><a href="{% url 'shop:recipe_list' %}" class="footer-link">Recipes</a></li>
-                        <li><a href="{% url 'cart:cart_detail' %}" class="footer-link">My Cart</a></li>
-                        <li><a href="{% url 'orders:order_history' %}" class="footer-link">My Orders</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Contact Info -->
-            <div class="col-lg-3 col-md-6">
-                <div class="footer-widget">
-                    <h5 class="widget-title text-white mb-4">Contact Us</h5>
-                    <ul class="footer-contact list-unstyled">
-                        <li class="mb-2">
-                            <i class="fas fa-phone-alt me-2"></i>
-                            <a href="tel:+254726857007" class="footer-link">+254 726 857 007</a>
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-envelope me-2"></i>
-                            <a href="mailto:rm2657zxn6@privaterelay.appleid.com" class="footer-link">
-                                rm2657zxn6@privaterelay.appleid.com
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <i class="fas fa-map-marker-alt me-2"></i>
-                            <span class="text-light">Nyeri, Kenya</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-clock me-2"></i>
-                            <span class="text-light">Mon-Sat: 8:00 AM - 6:00 PM</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Newsletter -->
-            <div class="col-lg-3 col-md-6">
-                <div class="footer-widget">
-                    <h5 class="widget-title text-white mb-4">Stay Updated</h5>
-                    <p class="text-light mb-3">Subscribe to get recipes and farm updates</p>
-                    <form class="newsletter-form">
-                        <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Your email" required>
-                            <button class="btn btn-success" type="submit">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </form>
-                    <p class="text-light mt-3 small">
-                        Get notified about new recipes, seasonal produce, and special offers.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Copyright -->
-        <div class="footer-bottom py-4 mt-4 border-top border-light">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="mb-0 text-light">
-                        &copy; {{ current_year }} Wamugunda Farm. All rights reserved.
-                    </p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item"><a href="#" class="footer-link">Privacy Policy</a></li>
-                        <li class="list-inline-item"><a href="#" class="footer-link">Terms of Service</a></li>
-                        <li class="list-inline-item"><a href="#" class="footer-link">Sitemap</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
 {% endblock %}
 
 {% block extra_css %}
@@ -279,62 +173,6 @@
     .rounded.shadow:hover img {
         transform: scale(1.02);
     }
-
-    /* Footer Styles */
-    .footer-wrapper {
-        background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
-    }
-    
-    .footer-link {
-        color: #ddd;
-        text-decoration: none;
-        transition: color 0.3s ease;
-        display: inline-block;
-        padding: 2px 0;
-    }
-    
-    .footer-link:hover {
-        color: #28a745;
-        text-decoration: none;
-    }
-    
-    .footer-menu li {
-        margin-bottom: 8px;
-    }
-    
-    .footer-contact li {
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-    }
-    
-    .footer-contact i {
-        width: 20px;
-        color: #28a745;
-    }
-    
-    .social-links {
-        display: flex;
-        gap: 15px;
-    }
-    
-    .social-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 50%;
-        color: white;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-    
-    .social-link:hover {
-        background: #28a745;
-        transform: translateY(-3px);
-    }
     
     .bg-light-success {
         background-color: rgba(40, 167, 69, 0.05);
@@ -344,12 +182,7 @@
         border-color: #28a745 !important;
     }
     
-    /* Responsive adjustments */
     @media (max-width: 768px) {
-        .footer-widget {
-            margin-bottom: 30px;
-        }
-        
         .rounded.shadow img {
             height: 300px !important;
         }
@@ -358,43 +191,4 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-    // Get current year for copyright
-    document.addEventListener('DOMContentLoaded', function() {
-        const yearSpan = document.querySelector('.current-year');
-        if (yearSpan) {
-            yearSpan.textContent = new Date().getFullYear();
-        }
-        
-        // Newsletter form submission
-        const newsletterForm = document.querySelector('.newsletter-form');
-        if (newsletterForm) {
-            newsletterForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const email = this.querySelector('input[type="email"]').value;
-                if (email) {
-                    alert('Thank you for subscribing! You will receive updates from Wamugunda Farm.');
-                    this.reset();
-                }
-            });
-        }
-        
-        // Smooth scroll for footer links
-        document.querySelectorAll('.footer-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.getAttribute('href').startsWith('#')) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 100,
-                            behavior: 'smooth'
-                        });
-                    }
-                }
-            });
-        });
-    });
-</script>
 {% endblock %}

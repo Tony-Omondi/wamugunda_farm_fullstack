@@ -1,18 +1,18 @@
-"""
-Django settings for wamugundafarm project.
-"""
-
 from pathlib import Path
 import os
+from dotenv import load_dotenv # Import this
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j4ltx+@iml3l8z%plx1y)by7!w-mtvw6q1154+kfdf!&z#51-6'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
@@ -45,7 +45,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'wamugundafarm.urls'
 
-# ==================== TEMPLATES - FIXED & COMPLETE ====================
+# ==================== TEMPLATES ====================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -57,7 +57,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'cart.context_processors.cart',   # THIS MAKES {{ cart }} WORK EVERYWHERE
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -71,8 +71,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# ==================== CART SESSION ID - REQUIRED ====================
-CART_SESSION_ID = 'cart'   # THIS FIXES THE ERROR YOU HAD!
+# ==================== CART SESSION ID ====================
+CART_SESSION_ID = 'cart'
 
 # ==================== WSGI ====================
 WSGI_APPLICATION = 'wamugundafarm.wsgi.application'
@@ -84,20 +84,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-# Database
-# Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'wamugund_mywebsite',    # Exact name from your cPanel
-#         'USER': '',        # Exact user from your cPanel
-#         'PASSWORD': '', # The password you created for wamugund_admin
-#         'HOST': 'localhost',             # Standard for cPanel
-#         'PORT': '5432',                  # Standard PostgreSQL port
-#     }
-# }
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -116,7 +102,7 @@ USE_TZ = True
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Messages tags (for Bootstrap styling)
+# Messages tags
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.SUCCESS: 'alert-success',
@@ -125,14 +111,13 @@ MESSAGE_TAGS = {
     messages.INFO: 'alert-info',
 }
 
-# In settings.py
-# settings.py
-
+# ==================== EMAIL SETTINGS ====================
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.wamugundafarm.co.ke'   # Your cPanel mail server
-EMAIL_PORT = 465                            # SSL Port
-EMAIL_USE_SSL = True                        # Secure connection
+EMAIL_HOST = 'mail.wamugundafarm.co.ke'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
-EMAIL_HOST_USER = 'orders@wamugundafarm.co.ke'
-EMAIL_HOST_PASSWORD = 'c.qg+ry0(is%N-(F'
-DEFAULT_FROM_EMAIL = 'Wamugunda Farm <orders@wamugundafarm.co.ke>'
+# These now load securely from the .env file
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = f'Wamugunda Farm <{EMAIL_HOST_USER}>'

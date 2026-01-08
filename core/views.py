@@ -1,10 +1,12 @@
-# core/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from shop.models import Product
 from .models import GalleryCategory, GalleryItem, Testimonial
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.conf import settings
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -37,9 +39,50 @@ def about(request):
     context = {
         'testimonials': testimonials,
     }
-    return render(request, 'about.html', context)  # ✅ Fixed - added context parameter
+    return render(request, 'about.html', context)
 
 def contact(request):
+    if request.method == "POST":
+        # 1. Get data from the form
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        # 2. Format the email content
+        email_subject = f"Website Contact: {subject}"
+        email_message = f"""
+        You have received a new message from the Wamugunda Farm website.
+
+        --------------------------------
+        DETAILS:
+        Name:    {name}
+        Email:   {email}
+        Phone:   {phone}
+        Subject: {subject}
+        --------------------------------
+        
+        MESSAGE:
+        {message}
+        """
+
+        # 3. Send the email
+        try:
+            send_mail(
+                subject=email_subject,
+                message=email_message,
+                from_email=settings.EMAIL_HOST_USER, # Sends from orders@wamugundafarm.co.ke
+                recipient_list=[settings.EMAIL_HOST_USER, 'info.douglas@wamugundafarm.co.ke'], # Sends to both
+                fail_silently=False,
+            )
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect('contact')
+            
+        except Exception as e:
+            print(f"Error sending email: {e}")
+            messages.error(request, "Error sending message. Please try again or WhatsApp us.")
+
     return render(request, 'contact.html')
 
 def gallery(request):

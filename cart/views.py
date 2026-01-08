@@ -14,7 +14,7 @@ from urllib.parse import quote
 # --- IMPORTS ---
 from shop.models import Product
 from .cart import Cart
-from .models import Order  # <--- FIXED: Importing from current app (.models)
+from .models import Order 
 
 SHIPPING_ZONES = {
     'Thika Road': 250, 'Garden Estate': 250, 'Runda': 300, 'Muthaiga': 300,
@@ -91,14 +91,14 @@ def cart_detail(request):
         'total_with_shipping': total
     })
 
-# --- ORDER CREATION LOGIC ---
+# --- ORDER CREATION LOGIC (UPDATED) ---
 @require_POST
 def create_whatsapp_order(request):
     cart = Cart(request)
     if len(cart) == 0:
         return JsonResponse({'error': 'Cart is empty'}, status=400)
 
-    # 1. Get Customer Details from AJAX Form Data
+    # 1. Get Customer Details
     full_name = request.POST.get('full_name')
     email = request.POST.get('email')
     phone = request.POST.get('phone')
@@ -145,7 +145,7 @@ def create_whatsapp_order(request):
         order.pdf_invoice.save(f'invoice_{order.order_id}.pdf', File(BytesIO(pdf_content)))
         order.save()
 
-    # 4. Send Confirmation Email
+    # 4. Send Confirmation Email (To Customer AND Admin)
     try:
         subject = f"Order Confirmation - #{order.order_id} - Wamugunda Farm"
         body = f"""Dear {order.full_name},
@@ -163,14 +163,23 @@ We are processing your order and will contact you shortly via WhatsApp/Phone for
 Regards,
 Wamugunda Farm Team
 """
+        # --- NEW CODE: Admin Emails ---
+        # This sends the email to the customer, but BCCs (Blind Copies) the admins
+        admin_emails = [settings.EMAIL_HOST_USER, 'info.douglas@wamugundafarm.co.ke']
+
         email_msg = EmailMessage(
-            subject,
-            body,
-            settings.DEFAULT_FROM_EMAIL,
-            [order.email],
+            subject=subject,
+            body=body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[order.email],    # Sends to Customer
+            bcc=admin_emails     # Sends Copy to Admins (Hidden from customer)
         )
+        
         email_msg.attach(f'Invoice_{order.order_id}.pdf', pdf_content, 'application/pdf')
-        email_msg.send(fail_silently=True)
+        
+        # Changed to False so we can see errors in the console if it fails
+        email_msg.send(fail_silently=False) 
+
     except Exception as e:
         print(f"Error sending email: {e}")
 
@@ -195,7 +204,7 @@ Wamugunda Farm Team
 Thank you! 🌱"""
 
     encoded_message = quote(plain_message)
-    whatsapp_url = f"https://wa.me/254726857007?text={encoded_message}"
+    whatsapp_url = f"https://wa.me/254715601620?text={encoded_message}"
 
     cart.clear()
 
